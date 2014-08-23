@@ -13,15 +13,19 @@ Archive member included because of file (symbol)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o) (__InitIO)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
-                              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o) (_malloc)
+                              char_fsm.o (_malloc)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o) (___ctype)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o) (__sbrk)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o) (__TLS)
+/opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
+                              char_fsm.o (_memcpy)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o (_memset)
+/opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
+                              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o) (__copy_from_xmm)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
                               Pcon.o (_sleep)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
@@ -50,8 +54,6 @@ Archive member included because of file (symbol)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o) (_ldiv)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o) (___napuntil)
-/opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
-                              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o) (_memcpy)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o) (_memcmp)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
@@ -66,19 +68,23 @@ Archive member included because of file (symbol)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o) (_strncmp)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o) (_strncpy)
-/opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
-                              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o) (__copy_from_xmm)
 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
                               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o) (__baud)
 
 Allocating common symbols
 Common symbol       size              file
 
+_input_buffer       0x3c              Pcon.o
 ___stdio_lock       0x4               /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+_head               0x4               char_fsm.o
 _dfs_volinfo        0x34              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+_tail               0x4               char_fsm.o
+_md_state           0x4               char_fsm.o
 _(float, int, long,...)(short)
                     0x1a0             /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
 _dfs_currdir        0x40              /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+_char_state         0x4               char_fsm.o
+_input_buffer_ptr   0x4               Pcon.o
 
 Memory Configuration
 
@@ -98,6 +104,7 @@ LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
 LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crt0.o
 LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
 LOAD Pcon.o
+LOAD char_fsm.o
 LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/libgcc.a
 START GROUP
 LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a
@@ -204,134 +211,150 @@ LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
                 0x0000000030000054                ___init
  .init          0x00000000300000ac       0x18 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
 
-.text           0x00000000300000c4     0x5198
+.text           0x00000000300000c4     0x592c
  *(.text*)
  .text          0x00000000300000c4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
  .text          0x00000000300000c4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crt0.o
  .text          0x00000000300000c4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
- .text          0x00000000300000c4      0x1d8 Pcon.o
+ .text          0x00000000300000c4      0x300 Pcon.o
                 0x00000000300000c4                _disp_sys
-                0x00000000300001cc                _main
- .text          0x000000003000029c      0x184 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
-                0x000000003000029c                __filbuf
-                0x00000000300003d4                _fgetc
- .text          0x0000000030000420      0x100 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
-                0x0000000030000420                _fputc
- .text          0x0000000030000520      0x128 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
-                0x0000000030000520                _setvbuf
- .text          0x0000000030000648      0x2f0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
-                0x0000000030000648                ___fopen_driver
-                0x0000000030000818                _fclose
- .text          0x0000000030000938      0x394 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
-                0x000000003000098c                ___simple_printf
- .text          0x0000000030000ccc       0xc8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
-                0x0000000030000ccc                __InitIO
- .text          0x0000000030000d94      0x314 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
-                0x0000000030000f1c                __common_malloc
-                0x0000000030001020                _hubmalloc
-                0x0000000030001048                _malloc
-                0x0000000030001070                _free
-                0x000000003000108c                _hubfree
- .text          0x00000000300010a8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
- .text          0x00000000300010a8       0x1c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
-                0x00000000300010a8                _sbrk
-                0x00000000300010a8                __hubsbrk
-                0x00000000300010a8                __sbrk
- .text          0x00000000300010c4        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
- .text          0x00000000300010c8       0x9c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
-                0x00000000300010c8                _memset
- .text          0x0000000030001164       0x44 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
-                0x0000000030001164                _sleep
- .text          0x00000000300011a8      0x534 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
-                0x00000000300011a8                __FdSerial_start
-                0x0000000030001450                __FdSerial_stop
-                0x0000000030001474                __FdSerial_rxcheck
-                0x00000000300014b8                __FdSerial_getbyte
-                0x0000000030001534                __FdSerial_putbyte
-                0x00000000300015c8                __FdSerial_rxflush
-                0x00000000300015f0                __FdSerial_drain
- .text          0x00000000300016dc      0x1ac /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FullDuplexSerial.cog)
-                0x00000000300016dc                _binary_FullDuplexSerial_dat_start
-                0x0000000030001888                _binary_FullDuplexSerial_dat_end
- .text          0x0000000030001888       0xf0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
-                0x0000000030001888                _get_cog_driver_xmm
-                0x00000000300018c4                _load_cog_driver_xmm
-                0x000000003000193c                _kernel_use_lock
- .text          0x0000000030001978        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
- .text          0x0000000030001978      0x828 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
-                0x0000000030001a20                _dfs_stdio_errno
-                0x0000000030001b50                _mount_complete
-                0x0000000030001c68                _dfs_mount_defaults
-                0x0000000030001cc0                _dfs_resolve_path
- .text          0x00000000300021a0     0x21dc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
-                0x00000000300021a0                _dfs_setDefaultFileDateTime
-                0x0000000030002224                _DFS_SetDirEntDateTime
-                0x00000000300022b8                _DFS_SetStartCluster
-                0x0000000030002304                _DFS_GetVolInfo
-                0x00000000300025cc                _DFS_GetFAT
-                0x0000000030002748                _DFS_SetFAT
-                0x00000000300028fc                _DFS_CanonicalToDir
-                0x00000000300029ac                _DFS_GetFreeFAT
-                0x0000000030002a20                _DFS_GetNext
-                0x0000000030002c80                _DFS_OpenDir
-                0x0000000030002fc4                _DFS_GetFreeDirEnt
-                0x00000000300031cc                _DFS_OpenFile
-                0x00000000300037a4                _DFS_ReadFile
-                0x0000000030003ad4                _DFS_Seek
-                0x0000000030003ca8                _DFS_UnlinkFile
-                0x0000000030003e10                _DFS_WriteFile
- .text          0x000000003000437c      0x298 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
-                0x000000003000437c                _dfs_use_lock
-                0x00000000300043c4                _DFS_InitFileIO
-                0x0000000030004464                _DFS_ReadSector
-                0x0000000030004550                _DFS_WriteSector
- .text          0x0000000030004614       0xc0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
-                0x0000000030004614                _LoadSDDriver
- .text          0x00000000300046d4      0x52c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sd_driver.cog)
-                0x00000000300046d4                _binary_sd_driver_dat_start
-                0x0000000030004c00                _binary_sd_driver_dat_end
- .text          0x0000000030004c00      0x1ac /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
-                0x0000000030004d54                _fflush
- .text          0x0000000030004dac       0xa4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
-                0x0000000030004dac                _atoi
-                0x0000000030004dac                _atol
- .text          0x0000000030004e50       0x18 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
-                0x0000000030004e50                _ldiv
-                0x0000000030004e50                _div
- .text          0x0000000030004e68       0x5c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
-                0x0000000030004e68                ___napuntil
- .text          0x0000000030004ec4       0xb8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
-                0x0000000030004ec4                _memcpy
- .text          0x0000000030004f7c       0x50 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
-                0x0000000030004f7c                _memcmp
- .text          0x0000000030004fcc       0x4c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
-                0x0000000030004fcc                _strcat
- .text          0x0000000030005018       0x6c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
-                0x0000000030005018                _strcmp
- .text          0x0000000030005084       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
-                0x0000000030005084                _strcpy
- .text          0x00000000300050b0       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
-                0x00000000300050b0                _strlen
- .text          0x00000000300050dc       0x88 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
-                0x00000000300050dc                _strncmp
- .text          0x0000000030005164       0x58 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
-                0x0000000030005164                _strncpy
- .text          0x00000000300051bc       0xa0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
-                0x00000000300051bc                __copy_from_xmm
- .text          0x000000003000525c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
- .text          0x000000003000525c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
-                0x000000003000525c                _etext = .
+                0x0000000030000204                _main
+ .text          0x00000000300003c4      0x66c char_fsm.o
+                0x00000000300003c4                __p0
+                0x00000000300003cc                __p2
+                0x00000000300003f0                __p3
+                0x0000000030000414                __p4
+                0x0000000030000438                __p5
+                0x0000000030000470                __p7
+                0x0000000030000494                __p8
+                0x00000000300004c8                _process_buffer
+                0x0000000030000724                __p6
+                0x0000000030000760                _pop
+                0x00000000300007ec                _char_type
+                0x0000000030000878                _char_fsm
+                0x00000000300008dc                _test_cmd_q
+                0x00000000300008f4                _pop_cmd_q
+                0x0000000030000998                __p1
+ .text          0x0000000030000a30      0x184 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
+                0x0000000030000a30                __filbuf
+                0x0000000030000b68                _fgetc
+ .text          0x0000000030000bb4      0x100 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
+                0x0000000030000bb4                _fputc
+ .text          0x0000000030000cb4      0x128 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
+                0x0000000030000cb4                _setvbuf
+ .text          0x0000000030000ddc      0x2f0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+                0x0000000030000ddc                ___fopen_driver
+                0x0000000030000fac                _fclose
+ .text          0x00000000300010cc      0x394 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
+                0x0000000030001120                ___simple_printf
+ .text          0x0000000030001460       0xc8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
+                0x0000000030001460                __InitIO
+ .text          0x0000000030001528      0x314 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
+                0x00000000300016b0                __common_malloc
+                0x00000000300017b4                _hubmalloc
+                0x00000000300017dc                _malloc
+                0x0000000030001804                _free
+                0x0000000030001820                _hubfree
+ .text          0x000000003000183c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
+ .text          0x000000003000183c       0x1c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
+                0x000000003000183c                _sbrk
+                0x000000003000183c                __hubsbrk
+                0x000000003000183c                __sbrk
+ .text          0x0000000030001858        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
+ .text          0x000000003000185c       0xb8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
+                0x000000003000185c                _memcpy
+ .text          0x0000000030001914       0x9c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
+                0x0000000030001914                _memset
+ .text          0x00000000300019b0       0xa0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
+                0x00000000300019b0                __copy_from_xmm
+ .text          0x0000000030001a50       0x44 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
+                0x0000000030001a50                _sleep
+ .text          0x0000000030001a94      0x534 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
+                0x0000000030001a94                __FdSerial_start
+                0x0000000030001d3c                __FdSerial_stop
+                0x0000000030001d60                __FdSerial_rxcheck
+                0x0000000030001da4                __FdSerial_getbyte
+                0x0000000030001e20                __FdSerial_putbyte
+                0x0000000030001eb4                __FdSerial_rxflush
+                0x0000000030001edc                __FdSerial_drain
+ .text          0x0000000030001fc8      0x1ac /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FullDuplexSerial.cog)
+                0x0000000030001fc8                _binary_FullDuplexSerial_dat_start
+                0x0000000030002174                _binary_FullDuplexSerial_dat_end
+ .text          0x0000000030002174       0xf0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
+                0x0000000030002174                _get_cog_driver_xmm
+                0x00000000300021b0                _load_cog_driver_xmm
+                0x0000000030002228                _kernel_use_lock
+ .text          0x0000000030002264        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
+ .text          0x0000000030002264      0x828 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+                0x000000003000230c                _dfs_stdio_errno
+                0x000000003000243c                _mount_complete
+                0x0000000030002554                _dfs_mount_defaults
+                0x00000000300025ac                _dfs_resolve_path
+ .text          0x0000000030002a8c     0x21dc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
+                0x0000000030002a8c                _dfs_setDefaultFileDateTime
+                0x0000000030002b10                _DFS_SetDirEntDateTime
+                0x0000000030002ba4                _DFS_SetStartCluster
+                0x0000000030002bf0                _DFS_GetVolInfo
+                0x0000000030002eb8                _DFS_GetFAT
+                0x0000000030003034                _DFS_SetFAT
+                0x00000000300031e8                _DFS_CanonicalToDir
+                0x0000000030003298                _DFS_GetFreeFAT
+                0x000000003000330c                _DFS_GetNext
+                0x000000003000356c                _DFS_OpenDir
+                0x00000000300038b0                _DFS_GetFreeDirEnt
+                0x0000000030003ab8                _DFS_OpenFile
+                0x0000000030004090                _DFS_ReadFile
+                0x00000000300043c0                _DFS_Seek
+                0x0000000030004594                _DFS_UnlinkFile
+                0x00000000300046fc                _DFS_WriteFile
+ .text          0x0000000030004c68      0x298 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
+                0x0000000030004c68                _dfs_use_lock
+                0x0000000030004cb0                _DFS_InitFileIO
+                0x0000000030004d50                _DFS_ReadSector
+                0x0000000030004e3c                _DFS_WriteSector
+ .text          0x0000000030004f00       0xc0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
+                0x0000000030004f00                _LoadSDDriver
+ .text          0x0000000030004fc0      0x52c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sd_driver.cog)
+                0x0000000030004fc0                _binary_sd_driver_dat_start
+                0x00000000300054ec                _binary_sd_driver_dat_end
+ .text          0x00000000300054ec      0x1ac /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
+                0x0000000030005640                _fflush
+ .text          0x0000000030005698       0xa4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
+                0x0000000030005698                _atoi
+                0x0000000030005698                _atol
+ .text          0x000000003000573c       0x18 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
+                0x000000003000573c                _ldiv
+                0x000000003000573c                _div
+ .text          0x0000000030005754       0x5c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
+                0x0000000030005754                ___napuntil
+ .text          0x00000000300057b0       0x50 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
+                0x00000000300057b0                _memcmp
+ .text          0x0000000030005800       0x4c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
+                0x0000000030005800                _strcat
+ .text          0x000000003000584c       0x6c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
+                0x000000003000584c                _strcmp
+ .text          0x00000000300058b8       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
+                0x00000000300058b8                _strcpy
+ .text          0x00000000300058e4       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
+                0x00000000300058e4                _strlen
+ .text          0x0000000030005910       0x88 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
+                0x0000000030005910                _strncmp
+ .text          0x0000000030005998       0x58 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
+                0x0000000030005998                _strncpy
+ .text          0x00000000300059f0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
+ .text          0x00000000300059f0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+                0x00000000300059f0                _etext = .
 
-.fini           0x000000003000525c       0x3c
+.fini           0x00000000300059f0       0x3c
  *(.fini*)
- .fini          0x000000003000525c       0x28 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
-                0x000000003000525c                _exit
- .fini          0x0000000030005284       0x14 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
-                0x0000000030005288                __exit
-                0x0000000030005288                __Exit
-                0x0000000030005294                __ExitHook
+ .fini          0x00000000300059f0       0x28 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
+                0x00000000300059f0                _exit
+ .fini          0x0000000030005a18       0x14 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+                0x0000000030005a1c                __exit
+                0x0000000030005a1c                __Exit
+                0x0000000030005a28                __ExitHook
 
-.hub            0x0000000000000000      0xee8 load address 0x0000000030005298
+.hub            0x0000000000000000     0x100c load address 0x0000000030005a2c
  *(.hubstart)
  .hubstart      0x0000000000000000       0x20 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
                 0x0000000000000000                __clkfreq
@@ -354,143 +377,155 @@ LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
  .data          0x0000000000000c60        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
  .data          0x0000000000000c60        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crt0.o
  .data          0x0000000000000c60        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
- .data          0x0000000000000c60      0x138 Pcon.o
-                0x0000000000000d8c                __driverlist
- .data          0x0000000000000d98        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
- .data          0x0000000000000d98        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
- .data          0x0000000000000d98        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
- .data          0x0000000000000d98        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
-                0x0000000000000d98                ___dummy
- .data          0x0000000000000d9c       0x14 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
- .data          0x0000000000000db0        0xc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
- .data          0x0000000000000dbc        0x8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
-                0x0000000000000dbc                __malloc_heap
- .data          0x0000000000000dc4       0x84 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
-                0x0000000000000dc4                ___ctype
- .data          0x0000000000000e48        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
-                0x0000000000000e48                __heap_base
- .data          0x0000000000000e4c        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
-                0x0000000000000e4c                ___yield_ptr
- .data          0x0000000000000e50        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
- .data          0x0000000000000e50        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
- .data          0x0000000000000e50       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
-                0x0000000000000e50                __FullDuplexSerialDriver
-                0x0000000000000e74                __FullSerialName
- .data          0x0000000000000e7c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
- .data          0x0000000000000e7c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
- .data          0x0000000000000e7c       0x54 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
-                0x0000000000000ea0                __cfg_sdspi_config2
-                0x0000000000000ea4                __cfg_sdspi_config1
-                0x0000000000000ea8                __FileDriver
- .data          0x0000000000000ed0        0x8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
-                0x0000000000000ed0                _DefaultFileDate
-                0x0000000000000ed4                _DefaultFileTime
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
- .data          0x0000000000000ed8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
- .data          0x0000000000000ed8        0xc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
-                0x0000000000000ed8                __baud
-                0x0000000000000edc                __txpin
-                0x0000000000000ee0                __rxpin
- .data          0x0000000000000ee4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+ .data          0x0000000000000c60      0x174 Pcon.o
+                0x0000000000000dc8                __driverlist
+ .data          0x0000000000000dd4       0xe8 char_fsm.o
+                0x0000000000000dfc                _char_new_state
+                0x0000000000000e5c                _char_action
+ .data          0x0000000000000ebc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
+ .data          0x0000000000000ebc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
+ .data          0x0000000000000ebc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
+ .data          0x0000000000000ebc        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+                0x0000000000000ebc                ___dummy
+ .data          0x0000000000000ec0       0x14 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
+ .data          0x0000000000000ed4        0xc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
+ .data          0x0000000000000ee0        0x8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
+                0x0000000000000ee0                __malloc_heap
+ .data          0x0000000000000ee8       0x84 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
+                0x0000000000000ee8                ___ctype
+ .data          0x0000000000000f6c        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
+                0x0000000000000f6c                __heap_base
+ .data          0x0000000000000f70        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
+                0x0000000000000f70                ___yield_ptr
+ .data          0x0000000000000f74        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
+ .data          0x0000000000000f74        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
+ .data          0x0000000000000f74        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
+ .data          0x0000000000000f74        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
+ .data          0x0000000000000f74       0x2c /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
+                0x0000000000000f74                __FullDuplexSerialDriver
+                0x0000000000000f98                __FullSerialName
+ .data          0x0000000000000fa0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
+ .data          0x0000000000000fa0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
+ .data          0x0000000000000fa0       0x54 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+                0x0000000000000fc4                __cfg_sdspi_config2
+                0x0000000000000fc8                __cfg_sdspi_config1
+                0x0000000000000fcc                __FileDriver
+ .data          0x0000000000000ff4        0x8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
+                0x0000000000000ff4                _DefaultFileDate
+                0x0000000000000ff8                _DefaultFileTime
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
+ .data          0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
+ .data          0x0000000000000ffc        0xc /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
+                0x0000000000000ffc                __baud
+                0x0000000000001000                __txpin
+                0x0000000000001004                __rxpin
+ .data          0x0000000000001008        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x0000000000000ee4                PROVIDE (__C_LOCK, .)
-                0x0000000000000ee4        0x4 LONG 0x0
+                0x0000000000001008                PROVIDE (__C_LOCK, .)
+                0x0000000000001008        0x4 LONG 0x0
 
-.ctors          0x0000000000000ee8        0x8 load address 0x0000000030006180
+.ctors          0x000000000000100c        0x8 load address 0x0000000030006a38
  *(.ctors*)
- .ctors         0x0000000000000ee8        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
- .ctors         0x0000000000000eec        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
-                0x0000000000000eec                __environ
-                0x0000000000000eec                __argv
+ .ctors         0x000000000000100c        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
+ .ctors         0x0000000000001010        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+                0x0000000000001010                __environ
+                0x0000000000001010                __argv
 
-.dtors          0x0000000000000ef0        0x8 load address 0x0000000030006188
+.dtors          0x0000000000001014        0x8 load address 0x0000000030006a40
  *(.dtors*)
- .dtors         0x0000000000000ef0        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
- .dtors         0x0000000000000ef4        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+ .dtors         0x0000000000001014        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+ .dtors         0x0000000000001018        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
 
-.data           0x0000000000000ef8        0x0 load address 0x0000000030006190
-                0x0000000000000ef8                . = ALIGN (0x4)
+.data           0x000000000000101c        0x0 load address 0x0000000030006a48
+                0x000000000000101c                . = ALIGN (0x4)
 
-.bss            0x0000000000000ef8      0x320 load address 0x0000000030006190
-                0x0000000000000ef8                PROVIDE (__bss_start, .)
+.bss            0x000000000000101c      0x3f0 load address 0x0000000030006a48
+                0x000000000000101c                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crt0.o
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
- .bss           0x0000000000000ef8        0x0 Pcon.o
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
- .bss           0x0000000000000ef8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
- .bss           0x0000000000000ef8       0x50 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
- .bss           0x0000000000000f48        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
- .bss           0x0000000000000f4c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
- .bss           0x0000000000000f4c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
- .bss           0x0000000000000f4c       0xa8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
-                0x0000000000000f4c                ___napuntil_ptr
- .bss           0x0000000000000ff4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
- .bss           0x0000000000000ff4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
- .bss           0x0000000000000ff4        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
- .bss           0x0000000000000ff8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
- .bss           0x0000000000000ff8        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
- .bss           0x0000000000000ff8        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
-                0x0000000000000ff8                _dfs_mountflag
- .bss           0x0000000000000ffc        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
- .bss           0x0000000000000ffc        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
-                0x0000000000000ffc                __sd_mbox_p
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
- .bss           0x0000000000001000        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
+ .bss           0x000000000000101c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/hubstart_xmm.o
+ .bss           0x000000000000101c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crt0.o
+ .bss           0x000000000000101c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtbegin.o
+ .bss           0x000000000000101c        0x0 Pcon.o
+ .bss           0x000000000000101c       0x80 char_fsm.o
+ .bss           0x000000000000109c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fgetc.o)
+ .bss           0x000000000000109c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fputc.o)
+ .bss           0x000000000000109c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(setvbuf.o)
+ .bss           0x000000000000109c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+ .bss           0x000000000000109c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(simple_printf.o)
+ .bss           0x000000000000109c       0x50 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(init_io.o)
+ .bss           0x00000000000010ec        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(malloc.o)
+ .bss           0x00000000000010f0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(ctype.o)
+ .bss           0x00000000000010f0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sbrk.o)
+ .bss           0x00000000000010f0       0xa8 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(thread.o)
+                0x00000000000010f0                ___napuntil_ptr
+ .bss           0x0000000000001198        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcpy.o)
+ .bss           0x0000000000001198        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memset.o)
+ .bss           0x0000000000001198        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(xmmcopy.o)
+ .bss           0x0000000000001198        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(sleep.o)
+ .bss           0x0000000000001198        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FdSerial.o)
+ .bss           0x000000000000119c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(drivers.o)
+ .bss           0x000000000000119c        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(terminal.o)
+ .bss           0x000000000000119c        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+                0x000000000000119c                _dfs_mountflag
+ .bss           0x00000000000011a0        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(dosfs.o)
+ .bss           0x00000000000011a0        0x4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(file_io.o)
+                0x00000000000011a0                __sd_mbox_p
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(load_sd_driver.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fflush.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(atoi.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(div.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(nap.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(memcmp.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcat.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcmp.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strcpy.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strlen.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncmp.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(strncpy.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(serialparam.o)
+ .bss           0x00000000000011a4        0x0 /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
  *(.bss*)
  *(COMMON)
- COMMON         0x0000000000001000      0x1a4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
-                0x0000000000001000                ___stdio_lock
-                0x0000000000001004                ___files
- COMMON         0x00000000000011a4       0x74 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
-                0x00000000000011a4                _dfs_volinfo
-                0x00000000000011d8                _dfs_currdir
-                0x0000000000001218                PROVIDE (__bss_end, .)
+ COMMON         0x00000000000011a4       0x40 Pcon.o
+                0x00000000000011a4                _input_buffer
+                0x00000000000011e0                _input_buffer_ptr
+ COMMON         0x00000000000011e4       0x10 char_fsm.o
+                0x00000000000011e4                _head
+                0x00000000000011e8                _tail
+                0x00000000000011ec                _md_state
+                0x00000000000011f0                _char_state
+ COMMON         0x00000000000011f4      0x1a4 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(fopen_intern.o)
+                0x00000000000011f4                ___stdio_lock
+                0x00000000000011f8                ___files
+ COMMON         0x0000000000001398       0x74 /opt/parallax/lib/gcc/propeller-elf/4.6.1/../../../../propeller-elf/lib/xmmc/libc.a(FileDriver.o)
+                0x0000000000001398                _dfs_volinfo
+                0x00000000000013cc                _dfs_currdir
+                0x000000000000140c                PROVIDE (__bss_end, .)
 
-.hub_heap       0x0000000000001218        0x4
-                0x000000000000121c                . = (. + 0x4)
- *fill*         0x0000000000001218        0x4 00
-                0x0000000000001218                ___hub_heap_start = ADDR (.hub_heap)
+.hub_heap       0x000000000000140c        0x4
+                0x0000000000001410                . = (. + 0x4)
+ *fill*         0x000000000000140c        0x4 00
+                0x000000000000140c                ___hub_heap_start = ADDR (.hub_heap)
 
 .drivers
  *(.drivers)
                 0x00000000e0000000                __load_start_kernel = LOADADDR (.xmmkernel)
-                0x0000000000000ee8                ___CTOR_LIST__ = ADDR (.ctors)
-                0x0000000000000ef0                ___DTOR_LIST__ = ADDR (.dtors)
+                0x000000000000100c                ___CTOR_LIST__ = ADDR (.ctors)
+                0x0000000000001014                ___DTOR_LIST__ = ADDR (.dtors)
 
 .hash
  *(.hash)
@@ -657,6 +692,6 @@ LOAD /opt/parallax/lib/gcc/propeller-elf/4.6.1/xmmc/_crtend.o
                 0x00000000000007f4                PROVIDE (phsb, PHSB)
                 0x00000000000007f8                PROVIDE (vcfg, VCFG)
                 0x00000000000007fc                PROVIDE (vscl, VSCL)
-                0x0000000000001228                PROVIDE (__hub_end, (ADDR (.hub_heap) + 0x10))
+                0x000000000000141c                PROVIDE (__hub_end, (ADDR (.hub_heap) + 0x10))
                 0x0000000000008000                PROVIDE (__stack_end, 0x8000)
 OUTPUT(Pcon.elf elf32-propeller)

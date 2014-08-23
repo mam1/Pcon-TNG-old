@@ -6,7 +6,7 @@
 #ifndef CHAR_FSM_H_
 #define CHAR_FSM_H_
 
-#define _INPUT_BUFFER	60			//max input string length
+#define _INPUT_BUFFER	60			//max input string length 
 /* data structures */
 typedef struct node
 {

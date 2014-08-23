@@ -39,8 +39,10 @@
 #define _STACK_SIZE_DIO     30
 
 /* character parser fsm */
-// #define _CHAR_TOKENS     8
-// #define _CHAR_STATES     4
+#define _CHAR_TOKENS     6
+#define _CHAR_STATES     4
+#define _MAX_TOKEN_SIZE		30
+
 
 /* command parser fsm */
 // #define _CMD_TOKENS     29
@@ -95,10 +97,13 @@
 #define _COLON      58
 #define _SLASH      47
 #define _COMMA      44
-#define _BS         8
+#define _BS         127
 #define _QUOTE      34
 #define _CR         13
+#define _NL 		10
+#define _FF 		12
 #define _NO_CHAR    255
+#define _DELIMITER	_SLASH
 
 /* reboot system */
 #define reboot() __builtin_propeller_clkset(0x80)

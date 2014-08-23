@@ -1,5 +1,6 @@
 #include <propeller.h>
 #include <stdio.h>
+#include <stdlib.h>
 // #include "simpletools.h"
 #include "Pcon.h"
 #include "char_fsm.h"
@@ -7,11 +8,15 @@
 
 /***************************** globals ******************************/
 TQ                     *head, *tail;
-static char            input_buffer[_INPUT_BUFFER];
+extern char            input_buffer[_INPUT_BUFFER],*input_buffer_ptr;
+int                     md_state,char_state;
 
 /***************************** externals ************************/
-char                *input_buffer_ptr;  
-extern int          cmd_state,char_state;
+
+// extern int          cmd_state,char_state;
+
+
+
 // extern  struct {
 //     int                 channel; 
 //     int                 day; 
@@ -25,9 +30,9 @@ extern int          cmd_state,char_state;
 /**********************support fuctions ****************************/
 TQ *process_buffer(void)
 {
-    char        tb[_INPUT_BUFFER],*t_ptr,*start_char;        //,*end_char;
+    char        tb[_INPUT_BUFFER],*t_ptr,*start_char;        
     int         i; 
-    input_buffer_ptr = input_buffer;
+    printf("process buffer <%s>\n",input_buffer);
     t_ptr = tb;    
     start_char = input_buffer_ptr;
     head = '\0';
@@ -43,12 +48,12 @@ TQ *process_buffer(void)
             *(++input_buffer_ptr)='\0';
             if(tail == '\0')
             {             
-                tail = malloc(sizeof(TQ));
+                tail = (TQ *) malloc(sizeof(TQ));
                 head = tail;
             }
             else
             {
-                tail->next = malloc(sizeof(TQ));
+                tail->next = (TQ *)malloc(sizeof(TQ));
                 tail = tail->next;
             }
             tail->tptr = malloc(input_buffer_ptr - start_char );
@@ -57,17 +62,17 @@ TQ *process_buffer(void)
             start_char = input_buffer_ptr;
             start_char++;         
     }          
-        if((*input_buffer_ptr==_SPACE)||(*input_buffer_ptr==_COLON)||(*input_buffer_ptr==_SLASH)||(*input_buffer_ptr==_COMMA)) 
+        if(*input_buffer_ptr == _SPACE) 
         {
             *input_buffer_ptr='\0';
             if(tail == '\0')
             {             
-                tail = malloc(sizeof(TQ));
+                tail = (TQ *)malloc(sizeof(TQ));
                 head = tail;
             }
             else
             {
-                tail->next = malloc(sizeof(TQ));
+                tail->next = (TQ *)malloc(sizeof(TQ));
                 tail = tail->next;
             }
             tail->tptr = malloc(input_buffer_ptr - start_char );
@@ -96,11 +101,12 @@ char *pop()
     while(*ptr1 != '\0') *ptr2++ = *ptr1++;
     *ptr2 = '\0';
     head = head->next;     
-    free(hold);
+    free((void *)hold);
     return tb;
 }
 int char_type(char c)
 {
+    // printf ("char_type called char <%x>\n", c);
     switch(c)
     {
         case _ESC:
@@ -108,17 +114,19 @@ int char_type(char c)
         case _SPACE:
             return 1;
         case _COLON:
-            return 2;
+            return 1;
         case _SLASH:
-            return 3;
+            return 1;
+        case _COMMA:
+            return 1;            
         case _BS:
-            return 4;
+            return 2;
         case _QUOTE:
-            return 5;
+            return 3;
         case _CR:
-            return 6;
+            return 4;
     }
-    return 7;    
+    return 5;    
 }
 
 /********************************************/
@@ -126,19 +134,19 @@ int char_type(char c)
 /********************************************/
 
 /* 0 -  do nothing */
-int char_nop(char *c)
+int _p0(char *c)
 {
     return 0;
 }
 /* 1 – clear all buffers, reset both state machines */
-int char_esc(char *c)
+int _p1(char *c)
 {
-    char    dump[_TOKEN_BUFFER];
-    cmd_state = 0;          //reset state
+    char    dump[_MAX_TOKEN_SIZE];
+    // cmd_state = 0;          //reset state
     while(pop_cmd_q(dump)); //clear out the comand queue 
 
     printf("\n\nfsm reset\n");
-    reset_edit();           // clean out edit buffers
+    // reset_edit();           // clean out edit buffers
     input_buffer_ptr = input_buffer;
     *input_buffer_ptr++ = '?';
     *input_buffer_ptr++ = ' ';
@@ -148,53 +156,57 @@ int char_esc(char *c)
     return 0;
 }
 /* 2 – add char to buffer */                    
-int char_add_char(char *c)
+int _p2(char *c)
 {
 //    printf("add char to buffer <%c>",*c);
-    *input_buffer_ptr++ = *c;
+    *input_buffer_ptr++ = *c; 
 //    printf(" <%s>\n",input_buffer);
     return 0;
 }
 /* 3 – remove char from buffer */               
-int char_remove(char *c)
+int _p3(char *c)
 {   
-    input_buffer_ptr--;
+    // *c = '\0'
+    // printf("_p3 called\n");
+
+    *input_buffer_ptr-- = '\0';
     return 0;
 }
 /* 4 – add char to buffer, add delimiter to buffer */                 
-int char_add_dlim(char *c)
+int _p4(char *c)
 {
-    *input_buffer_ptr++ = *c;
+    *input_buffer_ptr++ = _DELIMITER;
     return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */              
-int char_add_quote_char_process(char *c)
+int _p5(char *c)
 {
     *input_buffer_ptr++ = _QUOTE;
     *input_buffer_ptr++ = *c;
     return 0;
 }
 /* 6 - add char to buffer,  process buffer */
-int char_add_process(char *c)
+int _p6(char *c)
 {
-    *input_buffer_ptr++ = ' '; 
+    // if(*input_buffer_ptr != _p3IMITER)
+    //     *input_buffer_ptr++ = _p3IMITER; 
     *input_buffer_ptr++ = '\0'; 
     process_buffer();
     return 0;
 } 
 
 /* 7 – add delimiter to buffer, add quote to buffer */
-int char_delim_add(char *c)
+int _p7(char *c)
 {
     *input_buffer_ptr++ = _QUOTE; 
     return 0;
 } 
 
 /* 8  - add char to buffer,  process buffer */
-int char_eof_process(char *c)
+int _p8(char *c)
 {
-    *input_buffer_ptr++ = '\0'; 
-    process_buffer();
+    *input_buffer_ptr++ = _QUOTE;
+    *input_buffer_ptr++ = _DELIMITER;
     return 0;
 } 
 
@@ -203,39 +215,34 @@ int char_eof_process(char *c)
 /***************************************/
 
 /* fsm support functions */
-int char_type(char);
-TQ *process_buffer(void);
+int char_type(char);        //return a type code for the passed char
+TQ *process_buffer(void);   //build token stack and clear input buffer
 
-/* fsm fuctions */
-int char_nop(char *);                    // 0
-int char_esc(char *);                    // 1
-int char_add_char(char *);               // 2
-int char_remove(char *);                 // 3
-int char_add_dlim(char *);               // 4
-int char_add_quote_char_process(char *); // 5
-int char_add_process(char *);            // 6
-int char_delim_add(char *);              // 7
-int char_eof_process(char *);            // 8
+/* fsm functions */
+int _p0(char *);   // do nothing 
+int _p1(char *);   // clear all buffers, reset both state machines
+int _p2(char *);   // add char to buffer
+int _p3(char *);   // remove char from buffer
+int _p4(char *);   // add char to buffer, add delimiter to buffer 
+int _p5(char *);   // add QUOTE to buffer, add char to buffer,  process buffer
+int _p6(char *);   // add char to buffer,  process buffer
+int _p7(char *);   // add delimiter to buffer, add quote to buffer 
+int _p8(char *);   // add quote and delimiter to buffer
 
-
-/* character processor action table - initialized with fsm fuctions */
+/* character processor action table - initialized with fsm functions */
 typedef int (*ACTION_PTR)(char *); 
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {     
-/* ESC   */ {char_esc,      char_esc,                    char_esc,         char_esc         },
-/* SPACE */ {char_nop,      char_add_char,               char_add_char,    char_nop         },
-/* COLON */ {char_nop,      char_add_char,               char_add_char,    char_nop         },
-/* SLASH */ {char_nop,      char_add_char,               char_add_char,    char_nop         },
-/* BSPACE*/ {char_nop,      char_remove,                 char_remove,      char_remove      },
-/* QUOTE */ {char_add_char, char_add_dlim,               char_delim_add,   char_delim_add },
-/* CR    */ {char_add_process,      char_add_quote_char_process, char_add_process, char_add_process },
-/* other */ {char_add_char, char_add_char,               char_add_char,    char_add_char    }};
+/* ESC   */ {_p1, _p1, _p1, _p1},
+/* DELIM */ {_p0, _p2, _p4, _p0},
+/* BSPACE*/ {_p0, _p3, _p3, _p3},
+/* QUOTE */ {_p2, _p8, _p7, _p7},
+/* CR    */ {_p6, _p5, _p6, _p6},
+/* other */ {_p2, _p2, _p2, _p2}};
 
 /* character processor state transition table */
 int char_new_state[_CHAR_TOKENS][_CHAR_STATES] ={
 /* ESC   */ {0, 0, 0, 0},
-/* SPACE */ {0, 1, 3, 3},
-/* COLON */ {0, 1, 3, 3},
-/* SLASH */ {0, 1, 3, 3},
+/* DELIM */ {0, 1, 3, 3},
 /* BSPACE*/ {0, 1, 2, 3},
 /* QUOTE */ {1, 3, 1, 1},
 /* CR    */ {0, 0, 0, 0},
@@ -247,8 +254,9 @@ int char_new_state[_CHAR_TOKENS][_CHAR_STATES] ={
 
 void char_fsm(int c_type,int *state,char *c)
 {
-//    printf("\nchar_fsm called: token type <%i>, state <%i>, char <%c>\n",
-//            c_type, *state, *c);
+   // printf("\nchar_fsm called: token type <%d>, state <%d>, char <%c>, inputbuffer < %s>\n",
+           // c_type, *state, *c, input_buffer);
+
     char_action[c_type][*state](c); 
     *state = char_new_state[c_type][*state];
 
