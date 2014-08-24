@@ -45,8 +45,8 @@
 
 
 /* command parser fsm */
-// #define _CMD_TOKENS     29
-// #define _CMD_STATES     14 
+#define _CMD_TOKENS     29
+#define _CMD_STATES     14 
 
 /* channel parameters */
 #if _DRIVEN == _DIOB
@@ -87,7 +87,7 @@
 /* buffers */
 // #define _INPUT_BUFFER           128
 // #define _TIME_STRING_BUFFER     40
-// #define _TOKEN_BUFFER           128
+#define _TOKEN_BUFFER           60
 // #define _VCMD_BUFFER            128
 // #define _PROMPT_BUFFER          400
 
@@ -103,7 +103,7 @@
 #define _NL 		10
 #define _FF 		12
 #define _NO_CHAR    255
-#define _DELIMITER	_SLASH
+#define _DELIMITER	42	//asterisk
 
 /* reboot system */
 #define reboot() __builtin_propeller_clkset(0x80)

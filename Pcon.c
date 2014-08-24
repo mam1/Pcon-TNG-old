@@ -17,7 +17,7 @@ _Driver *_driverlist[] = {&_FullDuplexSerialDriver,&_FileDriver,NULL};
 extern int char_state;
 
 /******************************** globals **************************************/
-    char            input_buffer[_INPUT_BUFFER],*input_buffer_ptr;
+char            input_buffer[_INPUT_BUFFER],tbuf[_TOKEN_BUFFER],*input_buffer_ptr;
     
 
 /***************************** support routines ********************************/
@@ -80,7 +80,15 @@ void disp_sys(void)	// write system info to serial terminal
         // }
 
         /* check the token stack */
+
+
+        // printf("popping token stack\n");
+        while(pop_cmd_q(tbuf))
+            printf("    <%s>\n",tbuf);
+        // printf("popped\n> ");
+   
         // while(pop_cmd_q(tbuf))
+            // printf("    <%s>\n",tbuf);
         //     cmd_fsm(tbuf,&cmd_state);   //cycle cmd fsm until queue is empty
 
         /* grab a character from the keyboard if one is present  */
@@ -96,7 +104,7 @@ void disp_sys(void)	// write system info to serial terminal
         {
             fputc(_CR, stdout);   		        //second CR after uer input
             fputc(_NL, stdout);
-            fputc('#', stdout);
+            fputc('>', stdout);
             fputc(' ', stdout);
         }
         else if(c == _BS)
