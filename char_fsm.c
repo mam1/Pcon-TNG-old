@@ -11,12 +11,12 @@
 #include "char_fsm.h"
 // #include "cmd_fsm.h"
 
-/***************************** globals ******************************/
+/****************************** globals ****************************/
 TQ                     *head, *tail;
 extern char            input_buffer[_INPUT_BUFFER],tbuf[_TOKEN_BUFFER],*input_buffer_ptr;
-int                    md_state,char_state;
+int                    cmd_state,char_state;
 
-/***************************** externals ************************/
+/****************************** externals **************************/
 
 // extern int          cmd_state,char_state;
 
@@ -32,12 +32,12 @@ int                    md_state,char_state;
 //     uint32_t            clipboard_buffer[_MAX_SCHEDULE_RECS];
 
 //     } edit;
-/**********************support functions ****************************/
+/*********************** support functions **************************/
 TQ *process_buffer(void)
 {
     char        tb[_INPUT_BUFFER],*t_ptr,*start_char;        
     int         i;
-    printf("process buffer <%s>\n",input_buffer);
+    // printf("process buffer <%s>\n",input_buffer);
     input_buffer_ptr = input_buffer;
     t_ptr = tb;    
     start_char = input_buffer_ptr;
@@ -138,9 +138,7 @@ int char_type(char c)
     return 5;    
 }
 
-/********************************************/
-/** character input parser action routines **/
-/********************************************/
+/********** character input parser action routines ***********/
 
 /* 0 -  do nothing */
 int _p0(char *c)
@@ -213,9 +211,8 @@ int _p8(char *c)
     return 0;
 } 
 
-/***************************************/
-/**  character input parser fsm start **/
-/***************************************/
+
+/**************** character input parser fsm tables ******************/
 
 /* fsm support functions */
 int char_type(char);        //return a type code for the passed char
@@ -251,9 +248,8 @@ uint8_t char_new_state[_CHAR_TOKENS][_CHAR_STATES] ={
 /* CR    */ {0, 0, 0, 0},
 /* other */ {2, 1, 2, 2}};
 
-/*****************************************************/
-/****  character input parser state machine end  *****/
-/*****************************************************/
+/************  character input parser state machine end  ***********/
+
 
 void char_fsm(int c_type,int *state,char *c)
 {

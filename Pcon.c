@@ -9,16 +9,18 @@
 #include "typedefs.h"
 
  #include "char_fsm.h"
+ #include "cmd_fsm.h"
 
 /***************************** drivers ********************************/
 extern _Driver _FullDuplexSerialDriver;
 extern _Driver _FileDriver;
 _Driver *_driverlist[] = {&_FullDuplexSerialDriver,&_FileDriver,NULL};
+
 extern int char_state;
 
 /******************************** globals **************************************/
 char            input_buffer[_INPUT_BUFFER],tbuf[_TOKEN_BUFFER],*input_buffer_ptr;
-    
+uint8_t             cmd_state;    
 
 /***************************** support routines ********************************/
 void disp_sys(void)	// write system info to serial terminal
@@ -59,7 +61,10 @@ void disp_sys(void)	// write system info to serial terminal
     setvbuf(stdout, NULL, _IONBF, 0);
     stdin->_flag &= ~_IOCOOKED;
     stdin->_flag |= _IONONBLOCK;
+
+
     input_buffer_ptr = input_buffer;    //initialize input buffer
+    cmd_state = 0;                      //initialize the command processor fsm
 
     printf("\n> ");
 
@@ -80,16 +85,8 @@ void disp_sys(void)	// write system info to serial terminal
         // }
 
         /* check the token stack */
-
-
-        // printf("popping token stack\n");
         while(pop_cmd_q(tbuf))
-            printf("    <%s>\n",tbuf);
-        // printf("popped\n> ");
-   
-        // while(pop_cmd_q(tbuf))
-            // printf("    <%s>\n",tbuf);
-        //     cmd_fsm(tbuf,&cmd_state);   //cycle cmd fsm until queue is empty
+            cmd_fsm(tbuf,&cmd_state);   //cycle cmd fsm until queue is empty
 
         /* grab a character from the keyboard if one is present  */
         c = fgetc(stdin);     					//nonblocking read
@@ -104,8 +101,8 @@ void disp_sys(void)	// write system info to serial terminal
         {
             fputc(_CR, stdout);   		        //second CR after uer input
             fputc(_NL, stdout);
-            fputc('>', stdout);
-            fputc(' ', stdout);
+            // fputc('>', stdout);
+            // fputc(' ', stdout);
         }
         else if(c == _BS)
         {

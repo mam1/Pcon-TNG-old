@@ -11,7 +11,7 @@ BOARD = C3F
 
 # objects for this program
 NAME = Pcon
-OBJS = Pcon.o char_fsm.o
+OBJS = Pcon.o char_fsm.o cmd_fsm.o
 
 all: $(NAME).elf
 

@@ -116,6 +116,9 @@ run: $(NAME).elf
 r: $(NAME).elf
 	$(LOADER) $(BOARDFLAG) $(NAME).elf -r -t -p /dev/cu.usbserial-004213FA
 
+e: $(NAME).elf
+	$(LOADER) $(BOARDFLAG) $(NAME).elf -r -t -e -p /dev/cu.usbserial-004213FA
+
 run2: $(NAME).elf
 	$(LOADER2) $(NAME).elf -t
 #

@@ -3,14 +3,17 @@
 
 #include "Pcon.h"
 
-/* control block pointer definition */
+/* action routines for the cmd fsm */
+typedef int(*CMD_ACTION_PTR)(int, int *,char *);
+
+/* control block pointer definitions */
 typedef volatile struct RTC_CB *RTC_CB_ADDR;
 typedef volatile struct DIO_CB *DIO_CB_ADDR;
 
 /* working schedule buffer definition */
 typedef struct
 {
-  uint8_t       b0;					//i2c byte 1
+  uint8_t       b0;					//i2c byte 1 
   uint8_t       b1;					//i2c byte 2
   uint8_t       buf[_BYTES_PER_WORKING_SET];//current day schedules for all channels
 } WORKING_SCH_BUFFER;
