@@ -9,12 +9,18 @@
 #include <stdlib.h>
 #include "Pcon.h"
 #include "char_fsm.h"
+#include "typedefs.h"
 // #include "cmd_fsm.h"
 
 /****************************** globals ****************************/
-TQ                     *head, *tail;
-extern char            input_buffer[_INPUT_BUFFER],tbuf[_TOKEN_BUFFER],*input_buffer_ptr;
-int                    cmd_state,char_state;
+TQ                          *head, *tail;
+extern  char                input_buffer[];
+extern  char                tbuf[];
+extern  char                *input_buffer_ptr;
+extern  uint8_t              cmd_state;
+extern  uint8_t              char_state;
+
+extern GLOBALS              *gptr;
 
 /****************************** externals **************************/
 
@@ -111,7 +117,7 @@ TQ *process_buffer(void)
 //     free((void *)hold);
 //     return tb;
 // }
-int char_type(char c)
+uint8_t char_type(char c)
 {
     // printf ("char_type called char <%x>\n", c);
     switch(c)
@@ -215,7 +221,7 @@ int _p8(char *c)
 /**************** character input parser fsm tables ******************/
 
 /* fsm support functions */
-int char_type(char);        //return a type code for the passed char
+uint8_t char_type(char);        //return a type code for the passed char
 TQ *process_buffer(void);   //build token stack and clear input buffer
 
 /* fsm functions */
@@ -251,7 +257,7 @@ uint8_t char_new_state[_CHAR_TOKENS][_CHAR_STATES] ={
 /************  character input parser state machine end  ***********/
 
 
-void char_fsm(int c_type,int *state,char *c)
+void char_fsm(uint8_t c_type,uint8_t *state,char *c)
 {
    // printf("\nchar_fsm called: token type <%d>, state <%d>, char <%c>, inputbuffer < %s>\n",
            // c_type, *state, *c, input_buffer);

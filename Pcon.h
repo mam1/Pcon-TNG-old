@@ -87,7 +87,7 @@
 // #define _BYTES_PER_DAY          	_BYTES_PER_CHANNEL * _NUMBER_OF_CHANNELS
 
 /* buffers */
-// #define _INPUT_BUFFER           128
+#define _INPUT_BUFFER           128
 // #define _TIME_STRING_BUFFER     40
 #define _TOKEN_BUFFER           60
 // #define _VCMD_BUFFER            128

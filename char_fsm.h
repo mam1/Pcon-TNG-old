@@ -6,7 +6,6 @@
 #ifndef CHAR_FSM_H_
 #define CHAR_FSM_H_
 
-#define _INPUT_BUFFER	60			//max input string length 
 /* data structures */
 typedef struct node
 {
@@ -15,14 +14,14 @@ typedef struct node
 }TQ;
 
 /* external fuctions */
-void char_fsm(int ,int *,char *);	//cycle the character fsm
+void char_fsm(uint8_t ,uint8_t *,char *);	//cycle the character fsm
 // void cmd_fsm(char *,int *);
 int pop_cmd_q(char *);				//pop a token off the command q
 int test_cmd_q();					//test for empty q 
 TQ *process_buffer(void);			//tokenize the input buffer, create command q
 
 /* internal fuctions */
-int char_type(char);				//return char type code
+uint8_t char_type(char);				//return char type code
 
 
 #endif

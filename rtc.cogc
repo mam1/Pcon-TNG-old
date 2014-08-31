@@ -1,0 +1,210 @@
+/****************************************************************/
+/*                                                              */
+/*  rtc.cogc -  version 2.0                                     */
+/*                                                              */
+/*  This code maintains the current time and date.  It reads a  */
+/*  DS3231 real time clock module, converts the BDC to integer  */
+/*  and updates the time/date control block in hub memory.  It  */
+/*  also sets triggers for a new day and a new second.          */
+/*                                                              */
+/*  The cog contains i2c bit banging code because the library   */
+/*  code is too large to fit in a cog and because the DS3231    */
+/*  requires clock stretching if the code is running in a cog.  */
+/*                                                              */
+/****************************************************************/
+
+#include <propeller.h>
+// #include "Pcon.h"
+#include "rtc.h"
+
+/***************************** globals ******************************/
+ static _COGMEM uint32_t     scl, sda, scl_mask, sda_mask, both_mask;
+/************************ support routines **************************/
+/* convert a byte of BCD to unit8_t */                                                                                              
+_NATIVE                                                          
+uint8_t bcd_to_decimal(uint8_t d)
+{
+    return ((d & 0x0F) + (((d & 0xF0) >> 4) * 10)); 
+}
+/* support clock stretching  */
+_NATIVE
+void set_scl_high(void){
+    i2c_float_scl_high;         //let the scl line float high
+    while((INA & scl_mask)==0); //wait for DS3231 to let go, should add time out code
+    return;
+} 
+/* I2C bus setup */                                                                                              
+_NATIVE
+int i2cOpen(int d, int c)
+{
+/* setup masks and initialize i2c bus */
+    scl = c;
+    sda = d;
+    scl_mask = 1 << scl;
+    sda_mask = 1 << sda;
+    both_mask = ~(scl_mask | sda_mask);
+    DIRA &= both_mask;
+    OUTA &= both_mask;
+    return 0;    
+}
+/* I2C Start condition, data line goes low when clock is high */
+_NATIVE
+void i2cStart(void)
+{
+    set_scl_high();             //let scl float high, but wait for DS3231 to let go
+    i2c_set_sda_low;            //pull SDA low
+}
+/* I2C Stop condition, clock goes high when data is low */
+_NATIVE
+void i2cStop(void)
+{
+    i2c_set_sda_low;            //pull SDA low
+    set_scl_high();             //let scl float high, but wait for DS3231 to let go 
+    i2c_float_sda_high;         //release the sda line       
+}
+/* write a byte to the i2c bus */
+_NATIVE
+uint8_t i2cwrite(uint8_t d)         
+{
+    static      uint8_t i;
+    i2c_set_scl_low;            //pull scl low
+    for (i = 0;i < 8; i++)      //send the msbits first 
+    {
+        if (d & 0x80)           
+            i2c_float_sda_high; //release the sda line
+        else
+            i2c_set_sda_low;    //pull SDA low
+        i2c_set_scl_low;        //pull scl low
+        set_scl_high();         //let scl float high, but wait for DS3231 to let go
+        d = d << 1;             //do shift here to increase scl high time 
+        i2c_set_scl_low;        //pull scl low
+    }
+    i2c_float_sda_high;         //release the sda line 
+    i2c_set_scl_low;            //pull scl low
+    set_scl_high();             //let scl float high, but wait for DS3231 to let go
+    i = (INA & sda_mask);       //read the ack bit
+    i2c_set_scl_low;            //pull scl low
+    return(i);
+}
+/* read a byte from the i2c bus */
+_NATIVE
+uint8_t i2cread(char b)   
+{
+    static uint8_t              i, d;
+    d = 0;
+    i2c_float_sda_high;        //release the sda line
+    i2c_set_scl_low;           //pull scl low
+    for (i = 0; i < 8; i++)    //read the msb first 
+    {
+        set_scl_high();        //let scl float high, but wait for DS3231 to let go
+        d = d << 1;
+        d |= (uint8_t)((INA & sda_mask) ? 1 : 0);  //read the data bit
+        i2c_set_scl_low;       //pull scl low
+    }
+    /* low for ack, high for nack */ 
+    if(b) i2c_float_sda_high;
+    else  i2c_set_sda_low;
+    set_scl_high();             //let scl float high, but wait for DS3231 to let go
+    i2c_set_scl_low;            //pull scl low
+    i2c_float_sda_high;         //release the sda line 
+    return d;
+}
+/* reset DS3231 comm interface */
+_NATIVE
+void comm_init(void)     
+{
+    do      
+    {        
+        i2c_float_sda_high;     //make sure master has released SDA 
+        set_scl_high();         //let scl float high, but wait for DS3231 to let go
+        if(INA & sda_mask)      //if sda is high, generate a start
+        {
+            i2c_set_sda_low;    //The DS3231 will recognize a valid start
+            i2c_float_sda_high; //condition anywhere in a I2C data transfer 
+        }
+        i2c_set_scl_low;
+    }       
+    while((INA & sda_mask)==0);     //if the DS3231 is holding sda low, try again 
+}
+_NATIVE
+void set(void)
+{
+    return;
+}
+/********************** start main routine ************************/
+/* loop forever updating the time and date in the control block */
+_NAKED
+void main (volatile RTC_CB *m)
+{
+    uint8_t                 hold_day;
+    uint8_t                 hold_sec;
+    uint8_t                 i; 
+
+    i2cOpen(_rtcDataPin,_rtcClockPin);  //set up the i2c bus
+    comm_init();                        //initialize DS3231 communication interface
+    while(1){                           //loop forever
+        while(lockset(m->rtc_lock));    //wait until we can set the lock
+        if(m->set != 0)
+        {
+            i2cStart();                     //generate an i2c start condition
+            if(i2cwrite(DS3231_Write_addr)) //setup to read
+                m->abt = 1;                 //set abort flag
+            if(i2cwrite(0))                 //point at start of data registers
+                m->abt = 2;                 //set abort flag
+            // i2cStop();                      //generate an i2c stop condition
+            // i2cStart();                     //generate an i2c start condition
+            // if(i2cwrite(DS3231_Read_addr))  //read the DS33231 data registers
+                // m->abt = 3;
+            for(i=0;i<7;i++) 
+            {
+                i2cwrite(m->set_data[i]);
+                m->set_data[i] = 0;
+            }
+            i2cStop();                      //generate an i2c stop condition
+            m->set = 0;
+        }
+        i2cStart();                     //generate an i2c start condition
+        if(i2cwrite(DS3231_Write_addr)) //setup to read
+            m->abt = 1;					//set abort flag
+        if(i2cwrite(0))                 //point at start of data registers
+            m->abt = 2;					//set abort flag
+        i2cStop();                      //generate an i2c stop condition
+        i2cStart();                     //generate an i2c start condition
+        if(i2cwrite(DS3231_Read_addr))  //read the DS33231 data registers
+            m->abt = 3;
+        m->sec =   bcd_to_decimal(i2cread(ACK));
+        m->min =   bcd_to_decimal(i2cread(ACK));
+        m->hour =  bcd_to_decimal(i2cread(ACK));
+        m->dow =   bcd_to_decimal(i2cread(ACK));
+        m->day =   bcd_to_decimal(i2cread(ACK));
+        m->month = bcd_to_decimal(i2cread(ACK));
+        m->year =  bcd_to_decimal(i2cread(NACK));
+        i2cStop();                      //generate an i2c stop condition
+        if(hold_day != m->day)
+        {   
+            hold_day = m->day;
+            m->update_day = 0;
+        }
+        if(hold_sec != m->sec)
+        {
+            hold_sec = m->sec;
+            m->update_sec = 0;
+        }
+        lockclr(m->rtc_lock);           //clear the lock
+        waitcnt(*(int*)0 + CNT);
+    };
+}
+/************************ end main routine ************************/
+
+
+
+
+
+
+
+
+
+
+
+
+

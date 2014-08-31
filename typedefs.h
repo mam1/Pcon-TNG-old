@@ -3,8 +3,19 @@
 
 #include "Pcon.h"
 
+/* global controll block */
+typedef struct
+{
+    char            input_buffer[_INPUT_BUFFER];
+    char            *input_buffer_ptr;
+    char            tbuf[_TOKEN_BUFFER];
+    uint8_t         cmd_state; 
+    uint8_t         char_state;  
+} GLOBALS;
+
+
 /* action routines for the cmd fsm */
-typedef int(*CMD_ACTION_PTR)(int, int *,char *);
+typedef int(*CMD_ACTION_PTR)(GLOBALS *, int, int *,char *); // (pointer to global structure, token type,intiger payload, pointer to a string)
 
 /* control block pointer definitions */
 typedef volatile struct RTC_CB *RTC_CB_ADDR;
