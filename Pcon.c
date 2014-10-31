@@ -2,21 +2,13 @@
  * This is the main pc program file.
  */
 #include <stdio.h>
-#include <propeller.h>
 #include <unistd.h>
-
+#include <stdint.h>
 #include "Pcon.h"
 #include "typedefs.h"
+#include "char_fsm.h"
+#include "cmd_fsm.h"
 
- #include "char_fsm.h"
- #include "cmd_fsm.h"
-
-/***************************** drivers ********************************/
-extern _Driver _FullDuplexSerialDriver;
-extern _Driver _FileDriver;
-_Driver *_driverlist[] = {&_FullDuplexSerialDriver,&_FileDriver,NULL};
-
-extern int char_state;
 
 /******************************** globals **************************************/
 char            input_buffer[_INPUT_BUFFER],tbuf[_TOKEN_BUFFER],*input_buffer_ptr;
