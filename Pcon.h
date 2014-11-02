@@ -3,6 +3,8 @@
 
 #define _major_version 2
 #define _minor_version 0
+#define _minor_revision 2
+#define _TRACE						YES
 
 // #define _FILE_SET_ID            "834"
 
@@ -39,10 +41,9 @@
 #define _STACK_SIZE_DIO     30
 
 /* character parser fsm */
-#define _CHAR_TOKENS     6
+#define _CHAR_TOKENS     8
 #define _CHAR_STATES     4
 #define _MAX_TOKEN_SIZE		30
-
 
 /* command parser fsm */
 // #define _CMD_TOKENS     29
@@ -50,9 +51,9 @@
 
 /* channel parameters */
 #if _DRIVEN == _DIOB
-    #define _NUMBER_OF_CHANNELS 8 
+#define _NUMBER_OF_CHANNELS 8
 #else
-    #define _NUMBER_OF_CHANNELS 5
+#define _NUMBER_OF_CHANNELS 5
 #endif
 #define _CHANNEL_NAME_SIZE          20
 // #define _CHANNEL_NAME_BUFFER_SIZE   30
@@ -64,20 +65,16 @@
 // #else
 //     #define _F_PREFIX           "rly"
 // #endif
-
 // #define _F_SCHEDULE_SUFIX       ".sch"
 // #define _F_CHANNEL_SUFIX        ".ch"
-
 /* schedule parameters */
 // #define _DAYS_PER_WEEK          	7
-
 #define _MAX_SCHEDULE_RECS      	10
 #define _INTS_PER_SCHEDULE			_MAX_SCHEDULE_RECS + 1
 #define _BYTES_PER_SCHEDULE			(_INTS_PER_SCHEDULE) * 4 	//a uint32_t contains the number of active records followed by vector of uint32_ts
 #define _BYTES_PER_WORKING_SET		_NUMBER_OF_CHANNELS * _BYTES_PER_SCHEDULE
 
 #define	_BYTES_PER_INT 				4
-
 
 // #define _SCHEDULE_BUFFER        	_BYTES_PER
 // #define _SCHEDULE_FILE_NAME_SIZE    40
@@ -87,7 +84,7 @@
 // #define _BYTES_PER_DAY          	_BYTES_PER_CHANNEL * _NUMBER_OF_CHANNELS
 
 /* buffers */
-// #define _INPUT_BUFFER           128
+#define _INPUT_BUFFER           128
 // #define _TIME_STRING_BUFFER     40
 #define _TOKEN_BUFFER           60
 // #define _VCMD_BUFFER            128
@@ -104,11 +101,9 @@
 #define _CR         13
 #define _NL 		10
 #define _FF 		12
+#define _EOF		0
 #define _NO_CHAR    255
 #define _DELIMITER	42	//asterisk
-
-/* reboot system */
-#define reboot() __builtin_propeller_clkset(0x80)
 
 
 #endif

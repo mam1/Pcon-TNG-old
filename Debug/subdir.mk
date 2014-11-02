@@ -6,17 +6,17 @@
 C_SRCS += \
 ../Pcon.c \
 ../char_fsm.c \
-../cmd_fsm.c 
+../trace.c 
 
 OBJS += \
 ./Pcon.o \
 ./char_fsm.o \
-./cmd_fsm.o 
+./trace.o 
 
 C_DEPS += \
 ./Pcon.d \
 ./char_fsm.d \
-./cmd_fsm.d 
+./trace.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
