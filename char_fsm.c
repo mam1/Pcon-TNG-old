@@ -12,6 +12,9 @@
 
 /***************************** globals ******************************/
 TQ *head, *tail;
+#ifdef _TRACE
+	char			trace_buf[128];
+#endif
 /***************************** externals ************************/
 extern char input_buffer[_INPUT_BUFFER], *input_buffer_ptr;
 extern int cmd_state, char_state;
@@ -28,7 +31,8 @@ extern struct {
 /**********************support fuctions ****************************/
 TQ *process_buffer(void) {
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"prodess_buffer: called");
+    sprintf(trace_buf, "process_buffer: called <%s>", input_buffer);
+	trace(_TRACE_FILE_NAME,trace_buf);
 #endif
 	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //,*end_char;
 	int i;
@@ -143,25 +147,49 @@ int char_esc(char *c) {
 }
 /* add char to buffer */
 int add(char *c) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME," add: adding character to buffer");
+#endif
 	*input_buffer_ptr++ = *c;
 	return 0;
 }
 /* remove char from buffer */
 int del(char *c) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME," del: removing character from buffer");
+#endif
 	input_buffer_ptr--;
 	return 0;
 }
 
 /*  add char to buffer, add delimiter to buffer */
 int dlm(char *c) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME," dlm: add character and entered dilimitor to buffer");
+#endif
 	*input_buffer_ptr++ = *c;
+	*input_buffer_ptr++ = _DELIMITER;
 	return 0;
 }
 /* add char to buffer,  process buffer */
 int cr(char *c) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME," cr: add character and dilimitor to buffer");
+#endif
 	*input_buffer_ptr++ = ' ';
 	*input_buffer_ptr++ = '\0';
 	process_buffer();
+#ifdef _TRACE
+    sprintf(trace_buf, "process_buffer: called input buffer after process <%s>", input_buffer);
+	trace(_TRACE_FILE_NAME,trace_buf);
+	char	bbb[128];
+	pop(bbb);
+    sprintf(trace_buf, "                pop token que <%s>", bbb);
+	trace(_TRACE_FILE_NAME,trace_buf);
+#endif
+	char xxx[128];
+	pop(xxx);
+	printf("<<<%s>>>\n",xxx);
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
@@ -214,7 +242,7 @@ ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
 /*     QUOTE */{ nop, add, add },
 /*        BS */{ del, del, del },
 /*        CR */{ nop, add,  cr },
-/*     OTHER */{ nop, add, add }};
+/*     OTHER */{ add, add, add }};
 
 /* character processor state transition table */
 int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
@@ -231,15 +259,12 @@ int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 
 void char_fsm(int c_type, int *state, char *c) {
 //	char			buf[128];
-#ifdef _TRACE
-	char			trace_buf[128];
-#endif
+
 
 #ifdef _TRACE
-    sprintf(trace_buf, "char_fsm: called with - c_type %d, state %d , char<%u>", c_type,*state,*c);
+    sprintf(trace_buf, "char_fsm: called with - c_type %d, state %d , char<%u>\n          buffer <%s>\n", c_type,*state,*c,input_buffer);
     trace(_TRACE_FILE_NAME,trace_buf);
 #endif
-    return;
 	char_action[c_type][*state](c);
 	*state = char_new_state[c_type][*state];
 

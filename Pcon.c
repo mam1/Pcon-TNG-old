@@ -7,8 +7,8 @@
 #include <ctype.h> 		//isalnum, tolower
 #include <stdlib.h>
 #include <string.h>
-#include <termios.h>
-#include "tlpi_hdr.h"
+//#include <termios.h>
+//#include "tlpi_hdr.h"
 #include "Pcon.h"
 #include "typedefs.h"
 #include "char_fsm.h"
@@ -17,7 +17,7 @@
 // #include "cmd_fsm.h"
 
 /******************************** globals **************************************/
-struct termios tp, save;
+//struct termios tp, save;
 char input_buffer[_INPUT_BUFFER];
 char tbuf[_TOKEN_BUFFER];
 char *input_buffer_ptr;
@@ -48,7 +48,7 @@ void disp_sys(void) {
 //	printf("  rtc - control block: %d, stack: %d\n",sizeof(RTC_CB),_STACK_SIZE_RTC);
 //	printf("  dio - control block: %d, stack: %d\n",sizeof(DIO_CB),_STACK_SIZE_DIO);
 //	printf("  max token size: %d\n",_MAX_TOKEN_SIZE);
-	printf("  input buffer size: %d characters\n", _INPUT_BUFFER);
+	printf(" input buffer size: %d characters\n", _INPUT_BUFFER);
 	return;
 }
 
@@ -72,13 +72,13 @@ int main(void) {
 	trace_flag = false;
 #endif
 	if (trace_flag == true) {
-		printf(" program trace active\n");
+		printf(" program trace active,");
 		if(trace_on(_TRACE_FILE_NAME,&trace_flag))
 			abort();
 		trace(_TRACE_FILE_NAME,"\n************************************************************************\nstart trace\n");
 	}
 	if (trace_flag == false)
-		printf("program trace disabled\n");
+		printf(" program trace disabled\n");
 
 	/* set up unbuffered io */
 //	if (tcgetattr(STDIN_FILENO, &tp) == -1)	//Retrieve current terminal settings, turn echoing off
@@ -118,10 +118,13 @@ int main(void) {
 
 		switch (c ) {
 		case _ESC:
-			exit_flag = 0;
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon: ecape entered\n");
 #endif
+			exit_flag = 0;
+			system ("/bin/stty cooked");			//switch to buffered iput
+			system("stty echo");					//turn on terminal echo
+			printf("\nreset\n");
 			exit(1);
 			break;
 		case _COMMA:
