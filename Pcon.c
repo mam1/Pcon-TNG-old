@@ -21,7 +21,7 @@ struct termios tp, save;
 char input_buffer[_INPUT_BUFFER];
 char tbuf[_TOKEN_BUFFER];
 char *input_buffer_ptr;
-uint8_t cmd_state;
+uint8_t cmd_state,char_state;
 
 
 /***************************** support routines ********************************/
@@ -91,7 +91,7 @@ int main(void) {
 //				"bad return code, trying to turn terminal echo off");
 
 
-	system("stty -echo");
+	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
 
 
@@ -101,43 +101,68 @@ int main(void) {
 	/************************************************************/
 
 	input_buffer_ptr = input_buffer;    			//initialize input buffer
+	char_state = 0;									//initialize the character fsm
 	cmd_state = 0;                     				//initialize the command processor fsm
 	printf("\n> ");
 	exit_flag = 1;
-	trace(_TRACE_FILE_NAME,"main: starting main event loop");
+	trace(_TRACE_FILE_NAME,"Pcon: starting main event loop");
 	while (exit_flag){
 		c = getchar();								//grab a character from the keyboard buffer
 		if(isalnum(c)){
-			trace(_TRACE_FILE_NAME,"Pcon: character entred is a alpha numeric");
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"Pcon: character entered is a alpha numeric");
+#endif
 			c = tolower(c);
 	        fputc(c, stdout);       				// echo char
 		}
+
 		switch (c ) {
 		case _ESC:
 			exit_flag = 0;
-
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"Pcon: ecape entered\n");
+#endif
+			exit(1);
 			break;
-		case _EOF:
+		case _COMMA:
+		case _COLON:
+		case _SPACE:
+		case _SLASH:
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"Pcon: character entered is a delimitor\n");
+#endif
+	        fputc(c, stdout);       				// echo char
+			break;
+
 		case _CR:
-			exit_flag = 0;
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"Pcon: character entered is a _CR\n");
+#endif
 			fputc(_CR, stdout);   		        	//second CR after uer input
 			fputc(_NL, stdout);
-			 char_fsm(char_type(c),&char_state,&c);  //cycle fsm
 			break;
+
 		case _BS:
 			fputc(8, stdout);
 			fputc(' ', stdout);
 			fputc(8, stdout);
 			break;
 		default:
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"Pcon: character entered is a defult\n");
+#endif
 			break;
 		}
+		char_fsm(char_type(c),&char_state,&c);  //cycle fsm
 
 	};
 
 	/* Restore original terminal settings */
 //	if (tcsetattr(STDIN_FILENO, TCSANOW, &save) == -1)
 //		printf("error2\n");
+	system ("/bin/stty cooked");			//switch to buffered iput
+	system("stty echo");					//turn on terminal echo
+
 	printf("\f\nnormal termination\n\n");
 	return 0;
 }

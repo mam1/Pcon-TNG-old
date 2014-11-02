@@ -27,6 +27,9 @@ extern struct {
 } edit;
 /**********************support fuctions ****************************/
 TQ *process_buffer(void) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"prodess_buffer: called");
+#endif
 	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //,*end_char;
 	int i;
 	input_buffer_ptr = input_buffer;
@@ -97,22 +100,19 @@ char *pop() {
 }
 int char_type(char c) {
 	switch (c) {
-	case _ESC:
-		return 0;
+	case _COMMA:
 	case _SPACE:
-		return 1;
 	case _COLON:
-		return 2;
 	case _SLASH:
-		return 3;
-	case _BS:
-		return 4;
+		return 0;
 	case _QUOTE:
-		return 5;
+		return 1;
+	case _BS:
+		return 2;
 	case _CR:
-		return 6;
+		return 3;
 	}
-	return 7;
+	return 4;
 }
 
 /********************************************/
@@ -120,7 +120,7 @@ int char_type(char c) {
 /********************************************/
 
 /* 0 -  do nothing */
-int char_nop(char *c) {
+int nop(char *c) {
 	return 0;
 }
 /* 1 – clear all buffers, reset both state machines */
@@ -141,21 +141,27 @@ int char_esc(char *c) {
 	process_buffer();
 	return 0;
 }
-/* 2 – add char to buffer */
-int char_add_char(char *c) {
-//    printf("add char to buffer <%c>",*c);
+/* add char to buffer */
+int add(char *c) {
 	*input_buffer_ptr++ = *c;
-//    printf(" <%s>\n",input_buffer);
 	return 0;
 }
-/* 3 – remove char from buffer */
-int char_remove(char *c) {
+/* remove char from buffer */
+int del(char *c) {
 	input_buffer_ptr--;
 	return 0;
 }
-/* 4 – add char to buffer, add delimiter to buffer */
-int char_add_dlim(char *c) {
+
+/*  add char to buffer, add delimiter to buffer */
+int dlm(char *c) {
 	*input_buffer_ptr++ = *c;
+	return 0;
+}
+/* add char to buffer,  process buffer */
+int cr(char *c) {
+	*input_buffer_ptr++ = ' ';
+	*input_buffer_ptr++ = '\0';
+	process_buffer();
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
@@ -164,13 +170,7 @@ int char_add_quote_char_process(char *c) {
 	*input_buffer_ptr++ = *c;
 	return 0;
 }
-/* 6 - add char to buffer,  process buffer */
-int char_add_process(char *c) {
-	*input_buffer_ptr++ = ' ';
-	*input_buffer_ptr++ = '\0';
-	process_buffer();
-	return 0;
-}
+
 
 /* 7 – add delimiter to buffer, add quote to buffer */
 int char_delim_add(char *c) {
@@ -194,53 +194,52 @@ int char_type(char);
 TQ *process_buffer(void);
 
 /* fsm fuctions */
-int char_nop(char *);                    // 0
-int char_esc(char *);                    // 1
-int char_add_char(char *);               // 2
-int char_remove(char *);                 // 3
-int char_add_dlim(char *);               // 4
-int char_add_quote_char_process(char *); // 5
-int char_add_process(char *);            // 6
-int char_delim_add(char *);              // 7
-int char_eof_process(char *);            // 8
+int nop(char *);
+int del(char *);
+int add(char *);
+int dlm(char *);
+int cr(char *);
+
+
+
+int char_add_quote_char_process(char *);
+
+int char_delim_add(char *);
+int char_eof_process(char *);
 
 /* character processor action table - initialized with fsm fuctions */
 typedef int (*ACTION_PTR)(char *);
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
-/* ESC   */{ char_esc, char_esc, char_esc, char_esc },
-/* SPACE */{ char_nop, char_add_char, char_add_char, char_nop },
-/* COLON */{ char_nop, char_add_char, char_add_char, char_nop },
-/* SLASH */{ char_nop, char_add_char, char_add_char, char_nop },
-/* BSPACE*/{ char_nop, char_remove, char_remove, char_remove },
-/* QUOTE */{ char_add_char, char_add_dlim, char_delim_add, char_delim_add },
-/* CR    */{ char_add_process, char_add_quote_char_process, char_add_process,char_add_process },
-/* other */{ char_add_char, char_add_char, char_add_char, char_add_char } };
+/* DELIMITOR */{ nop, add, dlm },
+/*     QUOTE */{ nop, add, add },
+/*        BS */{ del, del, del },
+/*        CR */{ nop, add,  cr },
+/*     OTHER */{ nop, add, add }};
 
 /* character processor state transition table */
 int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
-/* ESC   */{ 0, 0, 0, 0 },
-/* SPACE */{ 0, 1, 3, 3 },
-/* COLON */{ 0, 1, 3, 3 },
-/* SLASH */{ 0, 1, 3, 3 },
-/* BSPACE*/{ 0, 1, 2, 3 },
-/* QUOTE */{ 1, 3, 1, 1 },
-/* CR    */{ 0, 0, 0, 0 },
-/* other */{ 2, 1, 2, 2 } };
+
+/* DELIMITOR */{ 0, 1, 0},
+/*     QUOTE */{ 1, 0, 1},
+/*        BS */{ 0, 1, 2},
+/*        CR */{ 0, 0, 0},
+/*     OTHER */{ 2, 1, 2} };
 
 /*****************************************************/
 /****  character input parser state machine end  *****/
 /*****************************************************/
 
 void char_fsm(int c_type, int *state, char *c) {
-	char			buf[128];
+//	char			buf[128];
 #ifdef _TRACE
 	char			trace_buf[128];
 #endif
 
 #ifdef _TRACE
-    sprintf(trace_buf, "char_fsm: called with -  c_type %d, state %d , char<%u>", c_type,*state,*c);
+    sprintf(trace_buf, "char_fsm: called with - c_type %d, state %d , char<%u>", c_type,*state,*c);
     trace(_TRACE_FILE_NAME,trace_buf);
 #endif
+    return;
 	char_action[c_type][*state](c);
 	*state = char_new_state[c_type][*state];
 

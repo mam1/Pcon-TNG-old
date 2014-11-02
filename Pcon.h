@@ -41,8 +41,8 @@
 #define _STACK_SIZE_DIO     30
 
 /* character parser fsm */
-#define _CHAR_TOKENS     8
-#define _CHAR_STATES     4
+#define _CHAR_TOKENS     5
+#define _CHAR_STATES     3
 #define _MAX_TOKEN_SIZE		30
 
 /* command parser fsm */
