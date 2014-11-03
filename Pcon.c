@@ -1,5 +1,6 @@
 /**
- * This is the main pc program file.
+ * This is the main Pcon.c program file.
+ * BeagleBone Black implementation
  */
 #include <stdio.h>
 #include <unistd.h>
