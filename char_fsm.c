@@ -36,17 +36,23 @@ TQ *process_buffer(void) {
 #endif
 	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //,*end_char;
 	int i;
-	input_buffer_ptr = input_buffer;
-	t_ptr = tb;
+	input_buffer_ptr = input_buffer;					//set pointer to start of buffer
+	t_ptr = tb;											//set pointer to temperayr buffer
 	start_char = input_buffer_ptr;
-	head = '\0';
+	head = '\0';										//initialize head pointer
 	tail = head;
 	while (*input_buffer_ptr != '\0') {
 		if (*input_buffer_ptr == _QUOTE) {
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"process_buffer: found a quote");
+#endif
 			*t_ptr++ = *input_buffer_ptr++;
 			while ((*input_buffer_ptr != _QUOTE) && (*input_buffer_ptr != '\0'))
 				*t_ptr++ = *input_buffer_ptr++;
 			*t_ptr++ = _QUOTE;
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"process_buffer: found a second quote");
+#endif
 			*(++input_buffer_ptr) = '\0';
 			if (tail == '\0') {
 				tail = malloc(sizeof(TQ));
@@ -61,9 +67,11 @@ TQ *process_buffer(void) {
 			start_char = input_buffer_ptr;
 			start_char++;
 		}
-		if ((*input_buffer_ptr == _SPACE) || (*input_buffer_ptr == _COLON)
-				|| (*input_buffer_ptr == _SLASH)
-				|| (*input_buffer_ptr == _COMMA)) {
+
+		if(char_type(*input_buffer_ptr)==0) {					//test for a delimiter
+#ifdef _TRACE
+			trace(_TRACE_FILE_NAME,"process_buffer: found a delimiter");
+#endif
 			*input_buffer_ptr = '\0';
 			if (tail == '\0') {
 				tail = malloc(sizeof(TQ));
@@ -78,11 +86,12 @@ TQ *process_buffer(void) {
 			start_char = input_buffer_ptr;
 			start_char++;
 		}
+
 		*t_ptr++ = *input_buffer_ptr++;
 	}
-	for (i = 0; i < _INPUT_BUFFER; i++)
+	for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
 		input_buffer[i] = '\0';
-	input_buffer_ptr = input_buffer;
+	input_buffer_ptr = input_buffer;					//reset pointer
 	return head;
 }
 char *pop() {
@@ -168,7 +177,7 @@ int dlm(char *c) {
 	trace(_TRACE_FILE_NAME," dlm: add character and entered dilimitor to buffer");
 #endif
 	*input_buffer_ptr++ = *c;
-	*input_buffer_ptr++ = _DELIMITER;
+//	*input_buffer_ptr++ = _DELIMITER;
 	return 0;
 }
 /* add char to buffer,  process buffer */
@@ -180,16 +189,14 @@ int cr(char *c) {
 	*input_buffer_ptr++ = '\0';
 	process_buffer();
 #ifdef _TRACE
-    sprintf(trace_buf, "process_buffer: called input buffer after process <%s>", input_buffer);
+    sprintf(trace_buf, "process_buffer: input buffer after being processed <%s>", input_buffer);
 	trace(_TRACE_FILE_NAME,trace_buf);
 	char	bbb[128];
-	pop(bbb);
-    sprintf(trace_buf, "                pop token que <%s>", bbb);
-	trace(_TRACE_FILE_NAME,trace_buf);
+	while(pop_cmd_q(bbb)){
+		sprintf(trace_buf, "                pop token que <%s>", bbb);
+		trace(_TRACE_FILE_NAME,trace_buf);
+	}
 #endif
-	char xxx[128];
-	pop(xxx);
-	printf("<<<%s>>>\n",xxx);
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
@@ -280,6 +287,9 @@ int test_cmd_q() {
 
 /* pop token into buffer, return: 0 empty queue, -1 data placed in buffer  */
 int pop_cmd_q(char *buf) {
+//#ifdef _TRACE
+//	trace(_TRACE_FILE_NAME,"pop_cmd_q: called");
+//#endif
 	TQ *hold;
 	char *ptr1, *ptr2;
 

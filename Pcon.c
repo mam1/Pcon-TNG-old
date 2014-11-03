@@ -1,5 +1,5 @@
 /**
- * This is the main Pcon.c program file.
+ * This is the main Pcon.c program file
  * BeagleBone Black implementation
  */
 #include <stdio.h>
