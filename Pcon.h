@@ -14,35 +14,9 @@
 
 #define _DRIVEN     _DIOB
 
-/* propeller io pin assignments */
-// #if _DRIVEN == _DIOB
-//     /* if configured to drive the Parallax Digital IO board */
-//     #define _DataIO          4              // DIO -DIN & DATA_RLY
-//     #define _Clock           5              // DIO SCLK_IN & SCLK_RLY
-//     #define _HC165           6              // DIO LOAD_IN Pin
-//     #define _HC595           7              // DIO LAT_RLY Pin
-// #else
-//     /* if configure to drie AYQ212GH relays */
-//     #define _RLY1           3              // relay 1
-//     #define _RLY2           4              // relay 2
-//     #define _RLY3           5              // relay 3
-//     #define _RLY4           6              // relay 4
-//     #define _RLY5           7              // relay 5
-// #endif
-#define _toggle_VGA     15              // toggle the port B header to VGA
-#define _VGA_start      16              // VGA uses pins 16-
-#define _kbDataPin      26              // keyboard */
-#define _kbdClockPin    27              // keyboard */
-#define _i2cClockPin    28              //i2c - DS3231 clock,eeprom
-#define _i2cDataPin     29              //i2c - DS3231 data,eeprom
-
-/* cog parameters */
-#define _STACK_SIZE_RTC     30
-#define _STACK_SIZE_DIO     30
-
 /* character parser fsm */
 #define _CHAR_TOKENS     5
-#define _CHAR_STATES     3
+#define _CHAR_STATES     4
 #define _MAX_TOKEN_SIZE		30
 
 /* command parser fsm */

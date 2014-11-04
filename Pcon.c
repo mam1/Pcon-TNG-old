@@ -128,6 +128,7 @@ int main(void) {
 			printf("\nreset\n");
 			exit(1);
 			break;
+		case _QUOTE:
 		case _COMMA:
 		case _COLON:
 		case _SPACE:

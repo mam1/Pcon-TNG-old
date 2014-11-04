@@ -180,12 +180,12 @@ int dlm(char *c) {
 //	*input_buffer_ptr++ = _DELIMITER;
 	return 0;
 }
-/* add char to buffer,  process buffer */
+/* process buffer */
 int cr(char *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME," cr: add character and dilimitor to buffer");
 #endif
-	*input_buffer_ptr++ = ' ';
+//	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';
 	*input_buffer_ptr++ = '\0';
 	process_buffer();
 #ifdef _TRACE
@@ -236,29 +236,23 @@ int dlm(char *);
 int cr(char *);
 
 
-
-int char_add_quote_char_process(char *);
-
-int char_delim_add(char *);
-int char_eof_process(char *);
-
 /* character processor action table - initialized with fsm fuctions */
 typedef int (*ACTION_PTR)(char *);
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
-/* DELIMITOR */{ nop, add, dlm },
-/*     QUOTE */{ nop, add, add },
-/*        BS */{ del, del, del },
-/*        CR */{ nop, add,  cr },
-/*     OTHER */{ add, add, add }};
+/* DELIMITOR */{ nop, add, dlm, nop },
+/*     QUOTE */{ nop, add, add, nop },
+/*        BS */{ del, del, del, del },
+/*        CR */{ nop, add,  cr,  cr },
+/*     OTHER */{ add, add, add, add }};
 
 /* character processor state transition table */
 int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 
-/* DELIMITOR */{ 0, 1, 0},
-/*     QUOTE */{ 1, 0, 1},
-/*        BS */{ 0, 1, 2},
-/*        CR */{ 0, 0, 0},
-/*     OTHER */{ 2, 1, 2} };
+/* DELIMITOR */{ 0, 1, 3, 3},
+/*     QUOTE */{ 1, 0, 1, 1},
+/*        BS */{ 0, 1, 2, 3},
+/*        CR */{ 0, 0, 0, 0},
+/*     OTHER */{ 2, 1, 2, 2} };
 
 /*****************************************************/
 /****  character input parser state machine end  *****/
