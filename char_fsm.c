@@ -28,7 +28,7 @@ extern struct {
 	uint32_t clipboard_buffer[_MAX_SCHEDULE_RECS];
 
 } edit;
-/**********************support fuctions ****************************/
+/********************** support functions ****************************/
 TQ *process_buffer(void) {
 #ifdef _TRACE
     sprintf(trace_buf, "process_buffer: called <%s>", input_buffer);
@@ -37,7 +37,7 @@ TQ *process_buffer(void) {
 	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //,*end_char;
 	int i;
 	input_buffer_ptr = input_buffer;					//set pointer to start of buffer
-	t_ptr = tb;											//set pointer to temperayr buffer
+	t_ptr = tb;											//set pointer to temporary buffer
 	start_char = input_buffer_ptr;
 	head = '\0';										//initialize head pointer
 	tail = head;
@@ -94,6 +94,7 @@ TQ *process_buffer(void) {
 	input_buffer_ptr = input_buffer;					//reset pointer
 	return head;
 }
+/*
 char *pop() {
 	TQ *hold;
 	static char tb[128];
@@ -111,6 +112,8 @@ char *pop() {
 	free(hold);
 	return tb;
 }
+*/
+
 int char_type(char c) {
 	switch (c) {
 	case _COMMA:
@@ -142,7 +145,7 @@ int char_esc(char *c) {
 	char dump[_TOKEN_BUFFER];
 	cmd_state = 0;          //reset state
 	while (pop_cmd_q(dump))
-		; //clear out the comand queue 
+		; //clear out the command queue 
 
 	printf("\n\nfsm reset\n");
 //    reset_edit();           // clean out edit buffers
@@ -193,7 +196,7 @@ int cr(char *c) {
 	trace(_TRACE_FILE_NAME,trace_buf);
 	char	bbb[128];
 	while(pop_cmd_q(bbb)){
-		sprintf(trace_buf, "                pop token que <%s>", bbb);
+		sprintf(trace_buf, "                pop token queue <%s>", bbb);
 		trace(_TRACE_FILE_NAME,trace_buf);
 	}
 #endif
