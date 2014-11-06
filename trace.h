@@ -9,9 +9,11 @@
 #define TRACE_H_
 
 #include <stdbool.h>
-#define _TRACE_FILE_NAME	"t01.trc"
+#define _TRACE_FILE_NAME	"t02.trc"
 
 int trace_on(char *,int *);
-void trace(char *, char *);
+void trace(char *, char *, int, char *, char *);		//(trace filename, routine name, state, buffer, message)
+
+
 
 #endif /* TRACE_H_ */

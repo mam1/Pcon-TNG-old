@@ -74,9 +74,10 @@ int main(void) {
 #endif
 	if (trace_flag == true) {
 		printf(" program trace active,");
-		if(trace_on(_TRACE_FILE_NAME,&trace_flag))
-			abort();
-		trace(_TRACE_FILE_NAME,"\n************************************************************************\nstart trace\n");
+		if(trace_on(_TRACE_FILE_NAME,&trace_flag)){
+			printf("trace_on returned error\n");
+			trace_flag = false;
+		}
 	}
 	if (trace_flag == false)
 		printf(" program trace disabled\n");
@@ -106,12 +107,14 @@ int main(void) {
 	cmd_state = 0;                     				//initialize the command processor fsm
 	printf("\n> ");
 	exit_flag = 1;
-	trace(_TRACE_FILE_NAME,"Pcon: starting main event loop");
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\nstart trace\n");
+#endif
 	while (exit_flag){
 		c = getchar();								//grab a character from the keyboard buffer
 		if(isalnum(c)){
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon: character entered is a alpha numeric");
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a alpha numeric");
 #endif
 			c = tolower(c);
 	        fputc(c, stdout);       				// echo char
@@ -120,7 +123,7 @@ int main(void) {
 		switch (c ) {
 		case _ESC:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon: ecape entered\n");
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"ecape entered");
 #endif
 			exit_flag = 0;
 			system ("/bin/stty cooked");			//switch to buffered iput
@@ -129,19 +132,21 @@ int main(void) {
 			exit(1);
 			break;
 		case _QUOTE:
+	        fputc(c, stdout);       				// echo char
+			break;
 		case _COMMA:
 		case _COLON:
 		case _SPACE:
 		case _SLASH:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon: character entered is a delimitor\n");
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a delimitor");
 #endif
 	        fputc(c, stdout);       				// echo char
 			break;
 
 		case _CR:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon: character entered is a _CR\n");
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _CR");
 #endif
 			fputc(_CR, stdout);   		        	//second CR after uer input
 			fputc(_NL, stdout);
@@ -154,7 +159,7 @@ int main(void) {
 			break;
 		default:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon: character entered is a defult\n");
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"default processing - cycle fsm");
 #endif
 			break;
 		}

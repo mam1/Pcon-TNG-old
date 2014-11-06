@@ -14,17 +14,23 @@ int trace_on(char *name, int *flag) {
 	tracef = fopen(name, "w");		//make sure that there is an empty log file
 	if (tracef != NULL){
 		printf(" trace file <%s> opened\n", name);
+		fprintf(tracef,"\n************************************************************************\nstart trace\n");
 		fclose(tracef);
 		return 0;
 	}
-	printf(" can't open trace file <%s>\ntrace disabled\n", name);
-	flag = false;
-	return 1;
+	else{
+		printf(" can't open trace file <%s>\ntrace disabled\n", name);
+		flag = false;
+		return 1;
+	}
 }
-void trace(char *name,char *message){
+void trace(char *name, char *rname, int state, char *buf, char *message){		//(trace filename, routine name, state, buffer, message)
+	char			mess_buf[128];
 	FILE *tracef;
+
+    sprintf(mess_buf, "%s: %s\n  current state <%d>\n  input_buffer <%s>", rname, message, state, buf);
 	tracef = fopen(name, "a");
-	fprintf(tracef,"%s\n",message);
+	fprintf(tracef,"%s\n",mess_buf);
 	fclose(tracef);
 	return;
 }
