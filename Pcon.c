@@ -112,13 +112,13 @@ int main(void) {
 #endif
 	while (exit_flag){
 		c = getchar();								//grab a character from the keyboard buffer
-		if(isalnum(c)){
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a alpha numeric");
-#endif
-			c = tolower(c);
-	        fputc(c, stdout);       				// echo char
-		}
+//		if(isalnum(c)){
+//#ifdef _TRACE
+//			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a alpha numeric");
+//#endif
+//			c = tolower(c);
+//	        fputc(c, stdout);       				// echo char
+//		}
 
 		switch (c ) {
 		case _ESC:
@@ -132,7 +132,7 @@ int main(void) {
 			exit(1);
 			break;
 		case _QUOTE:
-	        fputc(c, stdout);       				// echo char
+//	        fputc(c, stdout);       				// echo char
 			break;
 		case _COMMA:
 		case _COLON:
@@ -163,6 +163,7 @@ int main(void) {
 #endif
 			break;
 		}
+        fputc(c, stdout);       				// echo char
 		char_fsm(char_type(c),&char_state,&c);  //cycle fsm
 
 	};

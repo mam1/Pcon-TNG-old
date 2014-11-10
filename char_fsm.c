@@ -177,7 +177,6 @@ int cr(char *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"cr",char_state,input_buffer,"process buffer");
 #endif
-//	if(char_state == 2) *input_buffer_ptr++ = ' ';
 	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';
 	*input_buffer_ptr++ = '\0';
 	process_buffer();
@@ -213,7 +212,10 @@ int cr2(char *c) {
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
-int char_add_quote_char_process(char *c) {
+int crq(char *c) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"crq",char_state,input_buffer,"add quote, process buffer");
+#endif
 	*input_buffer_ptr++ = _QUOTE;
 	*input_buffer_ptr++ = *c;
 	return 0;
@@ -248,6 +250,7 @@ int add(char *);
 int dlm(char *);
 int cr(char *);
 int cr2(char *);
+int crq(char *);
 
 /* character processor action table - initialized with fsm fuctions */
 typedef int (*ACTION_PTR)(char *);
@@ -255,7 +258,7 @@ ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
 /* DELIMITOR */{ nop, add, dlm, nop },
 /*     QUOTE */{ add, add, add, nop },
 /*        BS */{ del, del, del, del },
-/*        CR */{ nop, add,  cr, cr2 },
+/*        CR */{ nop, crq,  cr, cr2 },
 /*     OTHER */{ add, add, add, add }};
 
 /* character processor state transition table */
