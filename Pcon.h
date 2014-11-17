@@ -3,8 +3,8 @@
 
 #define _major_version 2
 #define _minor_version 0
-#define _minor_revision 4
-#define _TRACE						YES
+#define _minor_revision 5
+#define _TRACE						NO
 
 // #define _FILE_SET_ID            "834"
 
@@ -70,7 +70,7 @@
 #define _COLON      58
 #define _SLASH      47
 #define _COMMA      44
-#define _BS         127
+#define _BS         8
 #define _QUOTE      34
 #define _CR         13
 #define _NL 		10
