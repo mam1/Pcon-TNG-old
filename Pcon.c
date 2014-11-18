@@ -29,15 +29,21 @@ void disp_sys(void) {
 	printf(" input buffer size: %d characters\n", _INPUT_BUFFER);
 	return;
 }
+void prompt(void){
+	fputc(_CR,stdout);
+	fputc('>',stdout);
+	fputc(' ',stdout);
+	return;
+}
 
 /********************************************************************/
 /************************** start main  *****************************/
 /********************************************************************/
 int main(void) {
-	char c;       								//character typed on keyboard
-	int exit_flag;								//exit man loop if TRUE
-	int	char_state;								//currect state of the character procesing fsm
-	int			trace_flag = true;
+	char c;       			//character typed on keyboard
+	int exit_flag;			//exit man loop if TRUE
+	int	char_state;			//currect state of the character procesing fsm
+	int	trace_flag;			//control program trace
 
 	/************************ initializations ****************************/
 	printf("\033\143"); //clear the terminal screen, perserve the scroll back
@@ -62,7 +68,7 @@ int main(void) {
 	/* set up unbuffered io */
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
-	setvbuf (stdout, NULL, _IONBF, BUFSIZ);	//turn off buffering for stdout
+//	setvbuf (stdout, NULL, _IONBF, BUFSIZ);	//turn off buffering for stdout
 
 	/************************************************************/
 	/**************** start main processing loop ****************/
@@ -71,19 +77,7 @@ int main(void) {
 	input_buffer_ptr = input_buffer;    			//initialize input buffer pointer
 	char_state = 0;									//initialize the character fsm
 	cmd_state = 0;                     				//initialize the command processor fsm
-//	printf("\n> ");
-	fputc(_CR,stdout);
-	fputc('>',stdout);
-	fputc(' ',stdout);
-	fputc('x',stdout);
-	sleep(1);
-	fputc('x',stdout);
-	sleep(1);
-	fputc(8,stdout);
-	sleep(1);
-	fputc(' ',stdout);
-	sleep(1);
-	fputc(8,stdout);
+	prompt();
 	exit_flag = 1;
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\nstart trace\n");
@@ -98,7 +92,7 @@ int main(void) {
 #endif
 			exit_flag = 0;
 			system("/bin/stty cooked");			//switch to buffered iput
-			system("stty echo");					//turn on terminal echo
+			system("stty echo");				//turn on terminal echo
 			printf("\nsystem reset\n");
 			exit(1);
 			break;
@@ -125,15 +119,13 @@ int main(void) {
 			fputc(_NL, stdout);
 			break;
 
-		case _BS:
+		case _DEL:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _BS");
 #endif
-//			system ("/bin/stty cooked");		//switch to buffered io
-			fputc(8,stdout);
+			fputc(_BS,stdout);
 			fputc(' ',stdout);
-			fputc(8,stdout);
-//			system ("/bin/stty raw");			//switch to unbuffered io
+			fputc(_BS,stdout);
 			break;
 		default:
 #ifdef _TRACE
@@ -144,8 +136,8 @@ int main(void) {
 		}
 	};
 
-	system ("/bin/stty cooked");			//switch to buffered iput
-	system("stty echo");					//turn on terminal echo
+	system("/bin/stty cooked");			//switch to buffered iput
+	system("/bin/stty echo");			//turn on terminal echo
 	printf("\f\nnormal termination\n\n");
 	return 0;
 }
