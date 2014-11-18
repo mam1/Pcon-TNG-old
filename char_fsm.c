@@ -122,11 +122,11 @@ int char_type(char c) {
 /********************************************/
 
 /* 0 -  do nothing */
-int nop(char *c) {
+int nop(uint8_t *c) {
 	return 0;
 }
 /* 1 – clear all buffers, reset both state machines */
-int char_esc(char *c) {
+int char_esc(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"esc",char_state,input_buffer,"terminating program");
 #endif
@@ -147,7 +147,7 @@ int char_esc(char *c) {
 	return 0;
 }
 /* add char to buffer */
-int add(char *c) {
+int add(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"add",char_state,input_buffer,"adding character to buffer");
 
@@ -156,7 +156,7 @@ int add(char *c) {
 	return 0;
 }
 /* remove char from buffer */
-int del(char *c) {
+int del(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"add",char_state,input_buffer,"removing character from buffer");
 #endif
@@ -165,7 +165,7 @@ int del(char *c) {
 }
 
 /*  add char to buffer */
-int dlm(char *c) {
+int dlm(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"dlm",char_state,input_buffer,"add delimiter to buffer");
 #endif
@@ -173,7 +173,7 @@ int dlm(char *c) {
 	return 0;
 }
 /* process buffer */
-int cr(char *c) {
+int cr(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"cr",char_state,input_buffer,"process buffer");
 #endif
@@ -192,7 +192,7 @@ int cr(char *c) {
 	return 0;
 }
 
-int cr2(char *c) {
+int cr2(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"cr2",char_state,input_buffer,"process buffer");
 #endif
@@ -212,7 +212,7 @@ int cr2(char *c) {
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
-int crq(char *c) {
+int crq(uint8_t *c) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"crq",char_state,input_buffer,"add quote, process buffer");
 #endif
@@ -223,13 +223,13 @@ int crq(char *c) {
 
 
 /* 7 – add delimiter to buffer, add quote to buffer */
-int char_delim_add(char *c) {
+int char_delim_add(uint8_t *c) {
 	*input_buffer_ptr++ = _QUOTE;
 	return 0;
 }
 
 /* 8  - add char to buffer,  process buffer */
-int char_eof_process(char *c) {
+int char_eof_process(uint8_t *c) {
 	*input_buffer_ptr++ = '\0';
 	process_buffer();
 	return 0;
@@ -244,16 +244,16 @@ int char_type(char);
 TQ *process_buffer(void);
 
 /* fsm fuctions */
-int nop(char *);
-int del(char *);
-int add(char *);
-int dlm(char *);
-int cr(char *);
-int cr2(char *);
-int crq(char *);
+int nop(uint8_t *);
+int del(uint8_t *);
+int add(uint8_t *);
+int dlm(uint8_t *);
+int cr(uint8_t *);
+int cr2(uint8_t *);
+int crq(uint8_t *);
 
 /* character processor action table - initialized with fsm fuctions */
-typedef int (*ACTION_PTR)(char *);
+typedef int (*ACTION_PTR)(uint8_t *);
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
 /* DELIMITOR */{ nop, add, dlm, nop },
 /*     QUOTE */{ add, add, add, nop },
@@ -274,7 +274,7 @@ int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 /****  character input parser state machine end  *****/
 /*****************************************************/
 
-void char_fsm(int c_type, int *state, char *c) {
+void char_fsm(int c_type, int *state, uint8_t *c) {
 //	char			buf[128];
 
 

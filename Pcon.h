@@ -4,7 +4,7 @@
 #define _major_version 2
 #define _minor_version 0
 #define _minor_revision 5
-#define _TRACE						NO
+//#define _TRACE
 
 // #define _FILE_SET_ID            "834"
 

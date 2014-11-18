@@ -34,7 +34,7 @@ void disp_sys(void) {
 /************************** start main  *****************************/
 /********************************************************************/
 int main(void) {
-	char c;       								//character typed on keyboard
+	int c;       							//character typed on keyboard
 	int exit_flag;								//exit man loop if TRUE
 	int	char_state;								//currect state of the character procesing fsm
 	int			trace_flag = true;
@@ -75,6 +75,7 @@ int main(void) {
 	fputc(_CR,stdout);
 	fputc('>',stdout);
 	fputc(' ',stdout);
+/*
 	fputc('x',stdout);
 	sleep(1);
 	fputc('x',stdout);
@@ -84,64 +85,25 @@ int main(void) {
 	fputc(' ',stdout);
 	sleep(1);
 	fputc(8,stdout);
+*/
 	exit_flag = 1;
-#ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\nstart trace\n");
-#endif
 	while (exit_flag){
-		c = getchar();			//grab a character from the keyboard buffer
-		switch (c) {
-
-		case _ESC:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"ecape entered");
-#endif
+		c = fgetc(stdin);			//grab a character from the keyboard buffer
+		if(c == _ESC){
 			exit_flag = 0;
 			system("/bin/stty cooked");			//switch to buffered iput
-			system("stty echo");					//turn on terminal echo
+			system("/bin/stty echo");					//turn on terminal echo
 			printf("\nsystem reset\n");
 			exit(1);
-			break;
-
-		case _QUOTE:
-	        fputc(c, stdout);       				// echo char
-			break;
-
-		case _COMMA:
-		case _COLON:
-		case _SPACE:
-		case _SLASH:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a delimitor");
-#endif
-	        fputc(c, stdout);       				// echo char
-			break;
-
-		case _CR:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _CR");
-#endif
-			fputc(_CR, stdout);   		        	//second CR after uer input
-			fputc(_NL, stdout);
-			break;
-
-		case _BS:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _BS");
-#endif
-//			system ("/bin/stty cooked");		//switch to buffered io
+		}
+//		printf("<%u>",c);
+		if(c == 127){
 			fputc(8,stdout);
 			fputc(' ',stdout);
 			fputc(8,stdout);
-//			system ("/bin/stty raw");			//switch to unbuffered io
-			break;
-		default:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"default processing - cycle fsm");
-#endif
-			fputc(c, stdout);       				// echo char
-			char_fsm(char_type(c),&char_state,&c);  //cycle fsm
 		}
+		else fputc(c, stdout);       				// echo char
+//		char_fsm(char_type(c),&char_state,&c);  //cycle fsm
 	};
 
 	system ("/bin/stty cooked");			//switch to buffered iput

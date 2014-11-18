@@ -12,7 +12,7 @@ typedef struct node {
 } TQ;
 
 /* fuctions */
-void char_fsm(int, int *, char *);
+void char_fsm(int, int *, uint8_t *);
 void cmd_fsm(char *, int *);
 int char_type(char);
 int pop_cmd_q(char *);
