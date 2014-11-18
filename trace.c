@@ -20,13 +20,16 @@ int trace_on(char *name, int *flag) {
 	}
 	else{
 		printf(" can't open trace file <%s>\ntrace disabled\n", name);
-		flag = false;
+		*flag = false;
 		return 1;
 	}
 }
-void trace(char *name, char *rname, int state, char *buf, char *message){		//(trace filename, routine name, state, buffer, message)
+void trace(char *name, char *rname, int state, char *buf, char *message,int flag){		//(trace filename, routine name, state, buffer, message, trace flag)
 	char			mess_buf[128];
 	FILE *tracef;
+
+	if(flag == false)
+		return;
 
     sprintf(mess_buf, "%s: %s\n  current state <%d>\n  input_buffer <%s>", rname, message, state, buf);
 	tracef = fopen(name, "a");

@@ -12,7 +12,7 @@
 #define _TRACE_FILE_NAME	"t02.trc"
 
 int trace_on(char *,int *);
-void trace(char *, char *, int, char *, char *);		//(trace filename, routine name, state, buffer, message)
+void trace(char *, char *, int, char *, char *, int);		//(trace filename, routine name, state, buffer, message, trace flag)
 
 
 
