@@ -24,4 +24,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>graphics/char_fsm.jpeg</name>
+			<type>1</type>
+			<location>/home/mam1/Desktop/char_fsm.jpeg</location>
+		</link>
+	</linkedResources>
 </projectDescription>

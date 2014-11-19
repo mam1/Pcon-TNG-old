@@ -102,7 +102,7 @@ TQ *process_buffer(void) {
 	input_buffer_ptr = input_buffer;					//reset pointer
 	return head;
 }
-
+/* return token code  */
 int char_type(char c) {
 	switch (c) {
 	case _COMMA:
@@ -119,17 +119,8 @@ int char_type(char c) {
 	}
 	return 4;
 }
-
-/********************************************/
-/** character input parser action routines **/
-/********************************************/
-
-/* 0 -  do nothing */
-int nop(char *c) {
-	return 0;
-}
-/* 1 – clear all buffers, reset both state machines */
-int char_esc(char *c) {
+/* clear all buffers, reset both state machines */
+int reset_fsms(void) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"esc",char_state,input_buffer,"terminating program",trace_flag);
 #endif
@@ -149,6 +140,14 @@ int char_esc(char *c) {
 	process_buffer();
 	return 0;
 }
+
+/********************************************/
+/** character input parser action routines **/
+/********************************************/
+/* do nothing */
+int nop(char *c) {
+	return 0;
+}
 /* add char to buffer */
 int add(char *c) {
 	*input_buffer_ptr++ = *c;
@@ -157,8 +156,18 @@ int add(char *c) {
 #endif
 	return 0;
 }
+/* delim + quote to buffer */
+int adq(char *c) {
+	*input_buffer_ptr++ = ' ';
+	*input_buffer_ptr++ = *c;
+
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"add",char_state,input_buffer,"adding character to buffer",trace_flag);
+#endif
+	return 0;
+}
 /* add quote + delim to buffer */
-int addq(char *c) {
+int aqd(char *c) {
 	*input_buffer_ptr++ = *c;
 	*input_buffer_ptr++ = ' ';
 
@@ -260,31 +269,33 @@ int char_type(char);
 TQ *process_buffer(void);
 
 /* fsm fuctions */
-int nop(char *);
-int del(char *);
-int add(char *);
-int dlm(char *);
-int cr(char *);
+int nop(char *);	//do nothing
+int del(char *);	//remove charater from input buffer
+int add(char *);	//add character to input buffer
+int aqd(char *);	//add quote + delim to input buffer
+int adq(char *);	//delim  + quote to input buffer
+//int dlm(char *);	//add delimitier to buffer
+int cr(char *);		//process input buffer, reset char_fsm
 int cr2(char *);
 int crq(char *);
 
 /* character processor action table - initialized with fsm fuctions */
 typedef int (*ACTION_PTR)(char *);
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
-/* DELIMITOR */{ nop, add, dlm, nop },
-/*     QUOTE */{ add, addq, add, nop },
-/*        BS */{ del, del, del, del },
-/*        CR */{ nop, crq,  cr, cr2 },
-/*     OTHER */{ add, add, add, add }};
+/* DELIM */{nop, add, add, nop},
+/* QUOTE */{add, aqd, adq, nop},
+/*   DEL */{del, del, del, del},
+/*    CR */{nop,  cr,  cr,  cr},
+/* OTHER */{add, add, add, add}};
 
 /* character processor state transition table */
 int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 
-/* DELIMITOR */{ 0, 1, 3, 3},
-/*     QUOTE */{ 1, 0, 1, 1},
-/*        BS */{ 0, 1, 2, 3},
-/*        CR */{ 0, 0, 0, 0},
-/*     OTHER */{ 2, 1, 2, 2} };
+/* DELIM */{ 0, 1, 3, 3},
+/* QUOTE */{ 1, 3, 1, 1},
+/*   DEL */{ 0, 1, 2, 3},
+/*    CR */{ 0, 0, 0, 1},
+/* OTHER */{ 2, 1, 2, 2}};
 
 /*****************************************************/
 /****  character input parser state machine end  *****/
