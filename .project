@@ -24,16 +24,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>state_diagrams/char_fsm-2-0-7.jpg</name>
-			<type>1</type>
-			<location>/home/mam1/git/Pcon-TNG/jpegs/char_fsm-2-0-7.jpg</location>
-		</link>
-		<link>
-			<name>state_diagrams/char_fsm.jpeg</name>
-			<type>1</type>
-			<location>/home/mam1/Desktop/char_fsm.jpeg</location>
-		</link>
-	</linkedResources>
 </projectDescription>
