@@ -68,6 +68,10 @@ TQ *process_buffer(void) {
 			tail->next = '\0';
 			start_char = input_buffer_ptr;
 			start_char++;
+#ifdef _TRACE
+		    sprintf(trace_buf, "pusn token <%s>", tail->tptr);
+			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,trace_buf,trace_flag);
+#endif
 		}
 
 		if(char_type(*input_buffer_ptr)==0) {					//test for a delimiter
@@ -87,6 +91,10 @@ TQ *process_buffer(void) {
 			tail->next = '\0';
 			start_char = input_buffer_ptr;
 			start_char++;
+#ifdef _TRACE
+		    sprintf(trace_buf, "pusn token <%s>", tail->tptr);
+			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,trace_buf,trace_flag);
+#endif
 		}
 
 		*t_ptr++ = *input_buffer_ptr++;
@@ -94,12 +102,13 @@ TQ *process_buffer(void) {
 		trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"character added to temp buffer",trace_flag);
 #endif
 	}
-#ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"done processing, clean up",trace_flag);
-#endif
 	for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
 		input_buffer[i] = '\0';
 	input_buffer_ptr = input_buffer;					//reset pointer
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"done processing, clean up",trace_flag);
+#endif
+
 	return head;
 }
 /* return token code  */
@@ -196,11 +205,11 @@ int dlm(char *c) {
 }
 /* process buffer */
 int cr(char *c) {
+	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';	//make sure that the buffer is terminated
+	*input_buffer_ptr++ = '\0';
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"cr",char_state,input_buffer,"process buffer",trace_flag);
-#endif
-	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';	//make sure that the buffer is terminated
-	*input_buffer_ptr++ = '\0';										//with a blank folowed by a NULL
+#endif										//with a blank folowed by a NULL
 	process_buffer();
 #ifdef _TRACE
 	system ("/bin/stty cooked");			//switch to buffered iput
@@ -283,7 +292,7 @@ int crq(char *);
 typedef int (*ACTION_PTR)(char *);
 ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
 /* DELIM */{nop, add, add, nop},
-/* QUOTE */{add, aqd, adq, nop},
+/* QUOTE */{add, aqd, adq, add},
 /*   DEL */{del, del, del, del},
 /*    CR */{nop,  cr,  cr,  cr},
 /* OTHER */{add, add, add, add}};
@@ -313,6 +322,9 @@ void char_fsm(int c_type, int *state, char *c) {
 
 	*state = char_new_state[c_type][*state];
 //printf("\nnew state <%d>\n> ",*state);
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"char_fsm",*state,input_buffer,"after state change",trace_flag);
+#endif
 	return;
 }
 
