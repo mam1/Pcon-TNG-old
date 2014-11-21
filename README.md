@@ -1,7 +1,7 @@
 Pcon-TNG
 ========
 ###Pcon - multi channel programmable controller
-The state of up to 8 channels can be controlled by time of day, time of day and a sensor value or manually. Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on the BBB and uses a command line interface.  The BeagleBone Black (BBB) communicates with the C3 over a serial connection. The C3 drives the Digital IO Board (DIOB) over a serial connection.
+The state of up to 8 channels can be controlled by time of day, time of day and a sensor value or manually. Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection. The C3 drives the Paralax Digital IO Board (DIOB) over a serial connection.
 
 ####Hardware
 * Parallax C3
