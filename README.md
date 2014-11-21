@@ -7,10 +7,15 @@ Pcon-TNG
 * BeagleBone Black
 * DS3232 RTC
 * MID400 AC line monitor
+
 ####Language
-#####C
+* C
+
 ####IDE
-#####     Eclipse, SimpleIDE, SublimeText
+* Eclipse
+* SimpleIDE
+* SublimeText
+
 ####Envirnoment
 #####.    Development machine - MacMini, Linux Mint 17.0, BeagleBone - Debian
 - - - - - - - - - 
