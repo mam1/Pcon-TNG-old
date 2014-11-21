@@ -17,9 +17,10 @@
 
 /******************************** globals **************************************/
 int	trace_flag;			//control program trace
-char input_buffer[_INPUT_BUFFER];
+char input_buffer[_INPUT_BUFFER], *input_buffer_ptr;
+char work_buffer[_INPUT_BUFFER], *work_buffer_ptr;
 char tbuf[_TOKEN_BUFFER];
-char *input_buffer_ptr;
+
 uint8_t cmd_state,char_state;
 
 /***************************** support routines ********************************/
@@ -45,10 +46,11 @@ int main(void) {
 	char c;       			//character typed on keyboard
 	int exit_flag;			//exit man loop if TRUE
 	int	char_state;			//currect state of the character procesing fsm
+	int i;
 
 	/************************ initializations ****************************/
 	printf("\033\143"); //clear the terminal screen, perserve the scroll back
-	disp_sys();	        				//display system info on serial terminal
+	disp_sys();	        //display system info on serial terminal
 
 	/* setup trace */
 #ifdef _TRACE
@@ -74,9 +76,10 @@ int main(void) {
 	/**************** start main processing loop ****************/
 	/************************************************************/
 
-	input_buffer_ptr = input_buffer;    			//initialize input buffer pointer
-	char_state = 0;									//initialize the character fsm
-	cmd_state = 0;                     				//initialize the command processor fsm
+	input_buffer_ptr = input_buffer;    //initialize input buffer pointer
+	work_buffer_ptr = work_buffer;    	//initialize work buffer pointer
+	char_state = 0;						//initialize the character fsm
+	cmd_state = 0;                     	//initialize the command processor fsm
 	prompt();
 	exit_flag = 1;
 #ifdef _TRACE
@@ -85,10 +88,9 @@ int main(void) {
 	while (exit_flag){
 		c = getchar();			//grab a character from the keyboard buffer
 		switch (c) {
-
 		case _ESC:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"ecape entered",trace_flag);
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"ecape entered",trace_flag);
 #endif
 			exit_flag = 0;
 			system("/bin/stty cooked");			//switch to buffered iput
@@ -96,44 +98,49 @@ int main(void) {
 			printf("\nsystem reset\n");
 			exit(1);
 			break;
-
-		case _QUOTE:
-	        fputc(c, stdout);       				// echo char
-			break;
-
-		case _COMMA:
-		case _COLON:
-		case _SPACE:
-		case _SLASH:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a delimitor",trace_flag);
-#endif
-	        fputc(c, stdout);       				// echo char
-			break;
-
 		case _CR:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _CR",trace_flag);
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"character entered is a _CR",trace_flag);
 #endif
 			fputc(_CR, stdout);   		        	//second CR after uer input
 			fputc(_NL, stdout);
+			if(char_type(*work_buffer_ptr)>1 )		//the last character before the CR is not a delimitor
+				*work_buffer_ptr++ = ' ';
+			*work_buffer_ptr = c;
+			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
+				input_buffer[i] = '\0';
+			input_buffer_ptr = input_buffer;					//reset pointer
+			work_buffer_ptr = work_buffer;
+			while(*work_buffer_ptr != '\0')
+				char_fsm(char_type(c),&char_state,work_buffer_ptr++);  //cycle fsm
+			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out work buffer
+				work_buffer[i] = '\0';
+			work_buffer_ptr = work_buffer;					//reset pointer
 			break;
-
 		case _DEL:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"character entered is a _BS",trace_flag);
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"character entered is a _BS",trace_flag);
 #endif
 			fputc(_BS,stdout);
 			fputc(' ',stdout);
 			fputc(_BS,stdout);
+			*work_buffer_ptr-- = '\0';
+			*work_buffer_ptr = '\0';
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"remove charater from input buffer",trace_flag);
+#endif
 			break;
 		default:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"default processing - cycle fsm",trace_flag);
 #endif
 			fputc(c, stdout);       				// echo char
+			*work_buffer_ptr++ = c;
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"add charater to input buffer",trace_flag);
+#endif
 		}
-		char_fsm(char_type(c),&char_state,&c);  //cycle fsm
+
 	};
 
 	system("/bin/stty cooked");			//switch to buffered iput
