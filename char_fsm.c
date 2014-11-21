@@ -311,17 +311,12 @@ int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 /*****************************************************/
 
 void char_fsm(int c_type, int *state, char *c) {
-//	char			buf[128];
-
-
 #ifdef _TRACE
     sprintf(trace_buf, "called with - c_type %d, char<%u>, state %d", c_type,*c,*state);
 	trace(_TRACE_FILE_NAME,"char_fsm",*state,input_buffer,trace_buf,trace_flag);
 #endif
 	char_action[c_type][*state](c);
-
 	*state = char_new_state[c_type][*state];
-//printf("\nnew state <%d>\n> ",*state);
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"char_fsm",*state,input_buffer,"after state change",trace_flag);
 #endif
