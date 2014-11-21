@@ -2,7 +2,7 @@ Pcon-TNG
 ========
 ###Pcon - multi channel programmable controller
 ####Hardware
-#####     Parallax C3, Parallax Digital IO Board, BeagleBone Black, DS3232 RTC, MID400 AC line monitor
+#####*.   Parallax C3, Parallax Digital IO Board, BeagleBone Black, DS3232 RTC, MID400 AC line monitor
 ####Language
 #####C
 ####IDE
