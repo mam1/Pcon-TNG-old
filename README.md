@@ -1,7 +1,26 @@
 Pcon-TNG
 ========
 ###Pcon - multi channel programmable controller
-#### using Parallax C3, Parallax Digital IO Board, BeagleBone Black
+The state of up to 8 channels can be controlled by time of day, time of day and a sensor value or manually. Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on the BBB and uses a command line interface.  The BeagleBone Black (BBB) communicates with the C3 over a serial connection. The C3 drives the Digital IO Board (DIOB) over a serial connection.
+
+####Hardware
+* Parallax C3
+* Parallax Digital IO Board
+* BeagleBone Black
+* DS3232 RTC
+* MID400 AC line monitor
+
+####Language
+* C
+
+####IDE
+* Eclipse - cross compile BBB code
+* SimpleIDE - cross compile C3 code
+
+####Envirnoment
+* Development machine - MacMini Linux Mint 17.0
+* BeagleBone - Debian
+
 - - - - - - - - - 
 #####Random thoughts - under construction and not stable.
 - - - - - - - - -
@@ -187,5 +206,4 @@ In the following format:
 
 
  
-
 
