@@ -2,13 +2,13 @@ Pcon-TNG
 ========
 ###Pcon - multi channel programmable controller
 ####Hardware
-#####Parallax C3, Parallax Digital IO Board, BeagleBone Black, DS3232 RTC, MID400 AC line monitor
+#####     Parallax C3, Parallax Digital IO Board, BeagleBone Black, DS3232 RTC, MID400 AC line monitor
 ####Language
 #####C
 ####IDE
-#####Eclipse, SimpleIDE, SublimeText
+#####     Eclipse, SimpleIDE, SublimeText
 ####Envirnoment
-#####Development machine - MacMini, Linux Mint 17.0, BeagleBone - Debian
+#####.    Development machine - MacMini, Linux Mint 17.0, BeagleBone - Debian
 - - - - - - - - - 
 #####Random thoughts - under construction and not stable.
 - - - - - - - - -
