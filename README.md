@@ -12,12 +12,13 @@ Pcon-TNG
 * C
 
 ####IDE
-* Eclipse
-* SimpleIDE
-* SublimeText
+* Eclipse - cross compile BBB code
+* SimpleIDE - cross compile C3 code
 
 ####Envirnoment
-#####.    Development machine - MacMini, Linux Mint 17.0, BeagleBone - Debian
+* Development machine - MacMini Linux Mint 17.0
+* BeagleBone - Debian
+
 - - - - - - - - - 
 #####Random thoughts - under construction and not stable.
 - - - - - - - - -
