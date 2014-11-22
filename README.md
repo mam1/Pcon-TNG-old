@@ -33,9 +33,8 @@ Each channel can switch 120 volt 8 amp load.  There can be a different schedule 
 ![Hardware layout](state_diagrams/char_fsm-2-0-7.jpg?raw=true)
 
 ####Application architecture
-The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection.
-
-The state of up to 8 channels can be controlled by time of day, btime of day and a sensor value or manually. Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on the BBB and uses a command line interface.  The BeagleBone Black (BBB) communicates with the C3 over a serial connection. The C3 drives the Digital IO Board (DIOB) over a serial connection.   
+The command processor is the most complex part of this project. It uses a state machine (char_fsm) to parse unbuffered keyboard input into a token stack.  A second state machine (cmd_fsm) processes the token stack. A third state machine handles communication with the C3. It runs on a BeagleBone Black and uses a comm
+ 
 
 ####Serial connection between the C3 and BeagleBone 
 
