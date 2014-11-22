@@ -30,7 +30,7 @@ Each channel can switch 120 volt 8 amp load.  There can be a different schedule 
 * BeagleBone - Debian
 
 ####Hardware architecture
-
+![Command Processor FSM](state_diagram/char_fsm-2-0-7.png?raw=true)
 
 ####Application architecture
 The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection.
@@ -39,7 +39,7 @@ The state of up to 8 channels can be controlled by time of day, btime of day and
 
 ####Serial connection between the C3 and BeagleBone 
 
-The C3 is running fdserial and UART1 is used on the BBB.  
+The C3 is running fdserial and UART1 is used on the BBB.  H
 BBB					  C3
 Tx P9_24  ----------> Rx 1
 Rx P9_26  <---------- Tx 0
