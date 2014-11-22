@@ -17,7 +17,6 @@
 
 /******************************** globals **************************************/
 int	trace_flag;			//control program trace
-char input_buffer[_INPUT_BUFFER], *input_buffer_ptr;
 char work_buffer[_INPUT_BUFFER], *work_buffer_ptr;
 char tbuf[_TOKEN_BUFFER];
 
@@ -76,19 +75,19 @@ int main(void) {
 	/**************** start main processing loop ****************/
 	/************************************************************/
 
-	input_buffer_ptr = input_buffer;    //initialize input buffer pointer
+//	input_buffer_ptr = input_buffer;    //initialize input buffer pointer
 	work_buffer_ptr = work_buffer;    	//initialize work buffer pointer
 	char_state = 0;						//initialize the character fsm
 	cmd_state = 0;                     	//initialize the command processor fsm
 	prompt();
 	exit_flag = 1;
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\nstart trace\n",trace_flag);
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\n",trace_flag);
 #endif
 	while (exit_flag){
 		c = getchar();			//grab a character from the keyboard buffer
 		switch (c) {
-		case _ESC:
+/* ESC */  case _ESC:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"ecape entered",trace_flag);
 #endif
@@ -98,26 +97,32 @@ int main(void) {
 			printf("\nsystem reset\n");
 			exit(1);
 			break;
-		case _CR:
+
+
+/* CR */	case _CR:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"character entered is a _CR",trace_flag);
 #endif
-			fputc(_CR, stdout);   		        	//second CR after uer input
+			fputc(_CR, stdout);
 			fputc(_NL, stdout);
-			if(char_type(*work_buffer_ptr)>1 )		//the last character before the CR is not a delimitor
-				*work_buffer_ptr++ = ' ';
+//			if(char_type(*(work_buffer_ptr-1))>1 )		//the character before the CR is not a delimiter or QUOTE
+//				*work_buffer_ptr++ = ' ';
 			*work_buffer_ptr = c;
-			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
-				input_buffer[i] = '\0';
-			input_buffer_ptr = input_buffer;					//reset pointer
+//			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
+//				input_buffer[i] = '\0';
+//			input_buffer_ptr = input_buffer;					//reset pointer
+
 			work_buffer_ptr = work_buffer;
-			while(*work_buffer_ptr != '\0')
-				char_fsm(char_type(c),&char_state,work_buffer_ptr++);  //cycle fsm
+			reset_char_fsm();
+			while(*work_buffer_ptr != '\0'){
+				char_fsm(char_type(*work_buffer_ptr),&char_state,work_buffer_ptr++);  //cycle fsm
+
+			}
 			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out work buffer
 				work_buffer[i] = '\0';
 			work_buffer_ptr = work_buffer;					//reset pointer
 			break;
-		case _DEL:
+/* DEL */   case _DEL:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"character entered is a _BS",trace_flag);
 #endif
@@ -130,14 +135,13 @@ int main(void) {
 	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"remove charater from input buffer",trace_flag);
 #endif
 			break;
-		default:
-#ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"default processing - cycle fsm",trace_flag);
-#endif
+
+
+/* OTHER */ default:
 			fputc(c, stdout);       				// echo char
 			*work_buffer_ptr++ = c;
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"add charater to input buffer",trace_flag);
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"add charater to work buffer",trace_flag);
 #endif
 		}
 

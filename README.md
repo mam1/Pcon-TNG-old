@@ -9,7 +9,9 @@ The state of up to 8 channels can be controlled by:
 * time of day and a sensor value
 * manually
 
-Each channel can switch 120 volt 8 amp load.  There can be a different schedule for each day of the week. Each channel has it own set of schedules. The software supports the building of a library of schedules.  Any schedule can be assigned to any channel(s). 
+Each channel can switch 120 volt 8 amp load.  The channel is controlled by a schedule for the current day of the week.  There can be a different schedule for each day of the week. Each channel has it own set of schedules, so for any one day of the week there are 8 (number of channels) schedules active.  
+
+The software supports the creation of a library of schedules.  Any schedule can be assigned to any channel(s). 
 
 ####Hardware
 * Parallax C3
@@ -33,7 +35,9 @@ Each channel can switch 120 volt 8 amp load.  There can be a different schedule 
 ![Hardware layout](state_diagrams/char_fsm-2-0-7.jpg?raw=true)
 
 ####Application architecture
-The command processor is the most complex part of this project. It uses a state machine (char_fsm) to parse unbuffered keyboard input into a token stack.  A second state machine (cmd_fsm) processes the token stack. A third state machine handles communication with the C3. It runs on a BeagleBone Black and uses a comm
+The command processor is the most complex part of this project. The use of unbuffered input allows the application to mediately react to the press of the ECS key, but it requires that the application handle backspace/delete. The app maintains a buffer which matches the user's screen. When a CR is entered the screen buffer is passed to a state machine(char_fsm) which parses the screen buffer into a token stack. When the main event loop detects a non-empyt token stack it passes the stack to a second state machine (cmd_fsm) which processes the token stack. A third state machine handles communication with the C3. 
+
+It runs on a BeagleBone Black and uses a comm
  
 
 ####Serial connection between the C3 and BeagleBone 

@@ -1,8 +1,8 @@
 
 #include <stdio.h>
-#include <string.h> //memset, memcpy
-#include <ctype.h> //isalnum, tolower
-#include <stdint.h>
+#include <string.h> 	//memset, memcpy
+#include <ctype.h> 		//isalnum, tolower
+#include <stdint.h>		//uint_8, uint_16, uint_32, etc.
 #include <stdlib.h>
 #include <malloc.h>
 #include "Pcon.h"
@@ -11,15 +11,15 @@
 #include "trace.h"
 
 /***************************** globals ******************************/
-extern int			trace_flag;
-/***************/
+char input_buffer[_INPUT_BUFFER], *input_buffer_ptr;
+
 /***************************** globals ******************************/
 TQ *head, *tail;
 #ifdef _TRACE
 	char			trace_buf[128];
 #endif
 /***************************** externals ************************/
-extern char input_buffer[_INPUT_BUFFER], *input_buffer_ptr;
+extern int			trace_flag;
 extern int cmd_state, char_state;
 extern struct {
 	int channel;
@@ -36,30 +36,32 @@ TQ *process_buffer(void) {
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"process_buffer", char_state, input_buffer, "called",trace_flag);
 #endif
-	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //,*end_char;
+	char tb[_INPUT_BUFFER], *t_ptr, *start_char;        //
 	int i;
-	input_buffer_ptr = input_buffer;					//set pointer to start of buffer
+	input_buffer_ptr = input_buffer;					//set pointer to start of input buffer
 	t_ptr = tb;											//set pointer to temporary buffer
 	start_char = input_buffer_ptr;
 	head = '\0';										//initialize head pointer
 	tail = head;
 	while (*input_buffer_ptr != '\0') {
-		if (*input_buffer_ptr == _QUOTE) {
+
+/* QUOTE */ if (*input_buffer_ptr == _QUOTE) {
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"found a quote",trace_flag);
 #endif
-			*t_ptr++ = *input_buffer_ptr++;
-			while ((*input_buffer_ptr != _QUOTE) && (*input_buffer_ptr != '\0'))
 				*t_ptr++ = *input_buffer_ptr++;
-			*t_ptr++ = _QUOTE;
+				while ((*input_buffer_ptr != _QUOTE) && (*input_buffer_ptr != '\0'))
+					*t_ptr++ = *input_buffer_ptr++;
+				*t_ptr++ = _QUOTE;
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"found a second quote",trace_flag);
 #endif
-			*(++input_buffer_ptr) = '\0';
-			if (tail == '\0') {
-				tail = malloc(sizeof(TQ));
-				head = tail;
-			} else {
+				*(++input_buffer_ptr) = '\0';
+				if (tail == '\0') {
+					tail = malloc(sizeof(TQ));
+					head = tail;
+				}
+			else {
 				tail->next = malloc(sizeof(TQ));
 				tail = tail->next;
 			}
@@ -74,7 +76,7 @@ TQ *process_buffer(void) {
 #endif
 		}
 
-		if(char_type(*input_buffer_ptr)==0) {					//test for a delimiter
+/* DELIM */ if(char_type(*input_buffer_ptr)==0) {					//test for a delimiter
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"found a delimiter",trace_flag);
 #endif
@@ -82,7 +84,8 @@ TQ *process_buffer(void) {
 			if (tail == '\0') {
 				tail = malloc(sizeof(TQ));
 				head = tail;
-			} else {
+			}
+			else {
 				tail->next = malloc(sizeof(TQ));
 				tail = tail->next;
 			}
@@ -93,13 +96,13 @@ TQ *process_buffer(void) {
 			start_char++;
 #ifdef _TRACE
 		    sprintf(trace_buf, "pusn token <%s>", tail->tptr);
-			trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,trace_buf,trace_flag);
+			trace(_TRACE_FILE_NAME,"process_buffer",char_state,tb,trace_buf,trace_flag);
 #endif
 		}
 
 		*t_ptr++ = *input_buffer_ptr++;
 #ifdef _TRACE
-		trace(_TRACE_FILE_NAME,"process_buffer",char_state,input_buffer,"character added to temp buffer",trace_flag);
+		trace(_TRACE_FILE_NAME,"process_buffer",char_state,tb,"character added to temp buffer",trace_flag);
 #endif
 	}
 	for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
@@ -128,10 +131,22 @@ int char_type(char c) {
 	}
 	return 4;
 }
-/* clear all buffers, reset both state machines */
-int reset_fsms(void) {
+
+
+int reset_char_fsm(void) {
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"esc",char_state,input_buffer,"terminating program",trace_flag);
+	trace(_TRACE_FILE_NAME,"reset_char_fsm",char_state,input_buffer,"resetting",trace_flag);
+#endif
+	char_state = 0;
+	input_buffer_ptr = input_buffer;
+	memset(input_buffer,'\0',sizeof(input_buffer));
+	input_buffer_ptr = input_buffer;
+	return 0;
+}
+
+int reset_cmd_fsm(void) {
+#ifdef _TRACE
+	trace(_TRACE_FILE_NAME,"reset_cmd_fsm",char_state,input_buffer,"resetting",trace_flag);
 #endif
 	abort();
 	char dump[_TOKEN_BUFFER];
@@ -225,12 +240,13 @@ int cr(char *c) {
 }
 
 int cr2(char *c) {
+//	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';	//make sure that the buffer is terminated
+//	input_buffer_ptr--;
+	*input_buffer_ptr = '\0';
+
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"cr2",char_state,input_buffer,"process buffer",trace_flag);
-#endif
-//	if(char_state == 2) *input_buffer_ptr++ = ' ';
-//	if(char_type(*input_buffer_ptr)!=0) *input_buffer_ptr++ = ' ';
-	*input_buffer_ptr++ = '\0';
+#endif										//with a blank folowed by a NULL
 	process_buffer();
 #ifdef _TRACE
 	system ("/bin/stty cooked");			//switch to buffered iput
@@ -238,9 +254,10 @@ int cr2(char *c) {
 	char	bbb[128];
 	printf("\npopping command queue\n");
 	while(pop_cmd_q(bbb)) printf("<%s>\n",bbb);
-#endif
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
+#endif
+
 	return 0;
 }
 /* 5 -  add QUOTE to buffer, add char to buffer,  process buffer */
@@ -285,7 +302,7 @@ int aqd(char *);	//add quote + delim to input buffer
 int adq(char *);	//delim  + quote to input buffer
 //int dlm(char *);	//add delimitier to buffer
 int cr(char *);		//process input buffer, reset char_fsm
-int cr2(char *);
+int cr2(char *);	//remove trailing delimiter, process buffer, reset char_fsm
 int crq(char *);
 
 /* character processor action table - initialized with fsm fuctions */
@@ -294,7 +311,7 @@ ACTION_PTR char_action[_CHAR_TOKENS][_CHAR_STATES] = {
 /* DELIM */{nop, add, add, nop},
 /* QUOTE */{add, aqd, adq, add},
 /*   DEL */{del, del, del, del},
-/*    CR */{nop,  cr,  cr,  cr},
+/*    CR */{nop,  cr,  cr,  cr2},
 /* OTHER */{add, add, add, add}};
 
 /* character processor state transition table */
@@ -303,7 +320,7 @@ int char_new_state[_CHAR_TOKENS][_CHAR_STATES] = {
 /* DELIM */{ 0, 1, 3, 3},
 /* QUOTE */{ 1, 3, 1, 1},
 /*   DEL */{ 0, 1, 2, 3},
-/*    CR */{ 0, 0, 0, 1},
+/*    CR */{ 0, 0, 0, 0},
 /* OTHER */{ 2, 1, 2, 2}};
 
 /*****************************************************/
@@ -315,6 +332,7 @@ void char_fsm(int c_type, int *state, char *c) {
     sprintf(trace_buf, "called with - c_type %d, char<%u>, state %d", c_type,*c,*state);
 	trace(_TRACE_FILE_NAME,"char_fsm",*state,input_buffer,trace_buf,trace_flag);
 #endif
+
 	char_action[c_type][*state](c);
 	*state = char_new_state[c_type][*state];
 #ifdef _TRACE
