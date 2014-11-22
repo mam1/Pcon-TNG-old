@@ -6,7 +6,7 @@ The state of up to 8 channels can be controlled by:
 * time of day and a sensor value
 * manually
 
-Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection. The C3 drives the Paralax Digital IO Board (DIOB) over a serial connection.
+There can be a different schedule for each day of the week. Each channel has it own set of schedules. The software supports the building of a library of schedules.  Any schedule can be assigned to any channel(s). The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection.
 
 ####Hardware
 * Parallax C3
@@ -44,7 +44,7 @@ Din 4 ------------> Din      4 - dio, DIN
 DATA_RLY     4 - dio, 
     5 - dio, SCLK_IN
     5 - dio, SCLK_RLY
-    6 - dio, LOAD_IN
+    6 - dio, LOAD_INy
     7 - dio, LAT_RLY
     4 - dio, DATA_RLY
     5 - dio, SCLK_IN
@@ -211,4 +211,3 @@ In the following format:
 
 
  
-
