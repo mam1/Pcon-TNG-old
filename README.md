@@ -1,12 +1,15 @@
 Pcon-TNG
 ========
+- - - - - - - - - 
+#####Random thoughts - under construction and not stable.
+- - - - - - - - -
 ###Pcon - multi channel programmable controller
 The state of up to 8 channels can be controlled by:
 * time of day
 * time of day and a sensor value
 * manually
 
-There can be a different schedule for each day of the week. Each channel has it own set of schedules. The software supports the building of a library of schedules.  Any schedule can be assigned to any channel(s). The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection.
+There can be a different schedule for each day of the week. Each channel has it own set of schedules. The software supports the building of a library of schedules.  Any schedule can be assigned to any channel(s). 
 
 ####Hardware
 * Parallax C3
@@ -26,9 +29,11 @@ There can be a different schedule for each day of the week. Each channel has it 
 * Development machine - MacMini Linux Mint 17.0
 * BeagleBone - Debian
 
-- - - - - - - - - 
-#####Random thoughts - under construction and not stable.
-- - - - - - - - -
+####Hardware architecture
+
+####Application architecture
+The command processor runs on a BeagleBone Black and uses a command line interface.  The BeagleBone Black (BBB) communicates with a Parallax C3 over a serial connection.
+
 The state of up to 8 channels can be controlled by time of day, time of day and a sensor value or manually. Each channel has it own schedules.  There can be different schedules for each day of the week. The command processor runs on the BBB and uses a command line interface.  The BeagleBone Black (BBB) communicates with the C3 over a serial connection. The C3 drives the Digital IO Board (DIOB) over a serial connection.   
 
 ####Serial connection between the C3 and BeagleBone 
