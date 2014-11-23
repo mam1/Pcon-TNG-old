@@ -21,6 +21,13 @@ char work_buffer[_INPUT_BUFFER], *work_buffer_ptr;
 char tbuf[_TOKEN_BUFFER];
 
 uint8_t cmd_state,char_state;
+/***************** global code to text conversion ********************/
+char *day_names_long[7] = {
+     "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+char *day_names_short[7] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+char *onoff[2] = {"off"," on"};
+char *con_mode[3] = {"manual","  time","time & sensor"};
+char *sch_mode[2] = {"day","week"};
 
 /***************************** support routines ********************************/
 /* write system info to stdout */
@@ -87,7 +94,8 @@ int main(void) {
 	while (exit_flag){
 
         /* check the token stack */
-        while(pop_cmd_q(tbuf))
+//        while(pop_cmd_q(tbuf))
+		if(test_cmd_q() != 0)
         {
  //           cmd_fsm(tbuf,&cmd_state);   	//cycle cmd fsm until queue is empty
  /**********************************************************************************************/

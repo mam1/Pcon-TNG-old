@@ -4,7 +4,7 @@
 #define _major_version 2
 #define _minor_version 0
 #define _minor_revision 9
-#define _TRACE
+//#define _TRACE
 
 // #define _FILE_SET_ID            "834"
 
@@ -20,7 +20,7 @@
 #define _MAX_TOKEN_SIZE		30
 
 /* command parser fsm */
-// #define _CMD_TOKENS     29
+#define _CMD_TOKENS     29
 #define _CMD_STATES     14 
 
 /* channel parameters */

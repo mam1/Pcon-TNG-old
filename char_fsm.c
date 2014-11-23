@@ -332,7 +332,7 @@ void char_fsm(int c_type, int *state, char *c) {
 }
 
 /* test command queue return: 0 empty queue, -1 toke available */
-int test_cmd_q() {
+int test_cmd_q(void) {
 	if (head == '\0')
 		return 0;
 	return -1;
