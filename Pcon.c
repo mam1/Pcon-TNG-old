@@ -93,12 +93,13 @@ int main(void) {
 	/************************************************************/
 	/**************** start main processing loop ****************/
 	/************************************************************/
-	while (exit_flag){
+	while (1){
 
         /* check the token stack */
         while(pop_cmd_q(tbuf))
         {
             cmd_fsm(tbuf,&cmd_state);   	//cycle cmd fsm until queue is empty
+            prompted = false;
  /**********************************************************************************************
 	system ("/bin/stty cooked");			//switch to buffered input
 	system("stty echo");					//turn on terminal echo
@@ -124,7 +125,7 @@ int main(void) {
 			system("/bin/stty cooked");			//switch to buffered iput
 			system("stty echo");				//turn on terminal echo
 			printf("\nsystem reset\n");
-			exit(1);
+			term(2);
 			break;
 
 /* CR */	case _CR:
@@ -170,4 +171,22 @@ int main(void) {
 	system("/bin/stty echo");			//turn on terminal echo
 	printf("\f\nnormal termination\n\n");
 	return 0;
+}
+int term(int t){
+	switch(t){
+	case 1:
+		system("/bin/stty cooked");			//switch to buffered iput
+		system("/bin/stty echo");			//turn on terminal echo
+		printf("\f\nnormal termination\n\n");
+		exit(1);
+		break;
+	case 2:
+		system("/bin/stty cooked");			//switch to buffered iput
+		system("/bin/stty echo");			//turn on terminal echo
+		printf("\f\nescape termination\n\n");
+		exit(1);
+		break;
+	default:
+			break;
+	}
 }

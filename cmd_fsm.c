@@ -167,7 +167,7 @@ int c_2(int tt, int *n, char *s)
 /* terminate program */
 int c_3(int tt, int *n, char *s)
 {
-	exit_flag = 0;
+	term(1);
     return 0;
 }
 
