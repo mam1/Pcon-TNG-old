@@ -7,6 +7,7 @@
 #define CMD_FSM_H_
 
 /* fuctions */
+int cmd_type(char *);
 char *build_prompt(char *, int);
 void reset_active(void);
 void reset_edit(void);

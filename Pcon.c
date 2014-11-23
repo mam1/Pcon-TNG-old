@@ -17,6 +17,9 @@
 
 /******************************** globals **************************************/
 int	trace_flag;			//control program trace
+int exit_flag = false;	//exit man loop if TRUE
+
+
 char work_buffer[_INPUT_BUFFER], *work_buffer_ptr;
 char tbuf[_TOKEN_BUFFER];
 
@@ -50,7 +53,6 @@ void prompt(void){
 /********************************************************************/
 int main(void) {
 	char c;       			//character typed on keyboard
-	int exit_flag = false;	//exit man loop if TRUE
 	int	char_state;			//current state of the character processing fsm
 	int prompted = false;	//has a prompt been sent
 	int i;
@@ -94,11 +96,10 @@ int main(void) {
 	while (exit_flag){
 
         /* check the token stack */
-//        while(pop_cmd_q(tbuf))
-		if(test_cmd_q() != 0)
+        while(pop_cmd_q(tbuf))
         {
- //           cmd_fsm(tbuf,&cmd_state);   	//cycle cmd fsm until queue is empty
- /**********************************************************************************************/
+            cmd_fsm(tbuf,&cmd_state);   	//cycle cmd fsm until queue is empty
+ /**********************************************************************************************
 	system ("/bin/stty cooked");			//switch to buffered input
 	system("stty echo");					//turn on terminal echo
 	char	bbb[128];
@@ -106,7 +107,7 @@ int main(void) {
 	while(pop_cmd_q(bbb)) printf("<%s>\n",bbb);
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
-/**********************************************************************************************/
+**********************************************************************************************/
 		}	
 		if(prompted == false){				//display prompt if necessary
 			prompted = true;
