@@ -43,15 +43,12 @@ void prompt(void){
 /********************************************************************/
 int main(void) {
 	char c;       			//character typed on keyboard
-	int exit_flag;			//exit man loop if TRUE
-	int	char_state;			//currect state of the character procesing fsm
+	int exit_flag = false;	//exit man loop if TRUE
+	int	char_state;			//current state of the character processing fsm
+	int prompted = false;	//has a prompt been sent
 	int i;
 
-	/************************ initializations ****************************/
-	printf("\033\143"); //clear the terminal screen, perserve the scroll back
-	disp_sys();	        //display system info on serial terminal
-
-	/* setup trace */
+	/************************* setup trace *******************************/
 #ifdef _TRACE
 	trace_flag = true;
 #else
@@ -66,30 +63,53 @@ int main(void) {
 	}
 	if (trace_flag == false)
 		printf(" program trace disabled\n");
+	/************************ initializations ****************************/
+	printf("\033\143"); //clear the terminal screen, perserve the scroll back
+	disp_sys();	        //display system info on serial terminal
 
 	/* set up unbuffered io */
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
 
-	/************************************************************/
-	/**************** start main processing loop ****************/
-	/************************************************************/
 
-//	input_buffer_ptr = input_buffer;    //initialize input buffer pointer
 	work_buffer_ptr = work_buffer;    	//initialize work buffer pointer
 	char_state = 0;						//initialize the character fsm
 	cmd_state = 0;                     	//initialize the command processor fsm
-	prompt();
+	
 	exit_flag = 1;
+
 #ifdef _TRACE
 	trace(_TRACE_FILE_NAME,"Pcon",char_state,NULL,"starting main event loop\n",trace_flag);
 #endif
+	/************************************************************/
+	/**************** start main processing loop ****************/
+	/************************************************************/
 	while (exit_flag){
+
+        /* check the token stack */
+        while(pop_cmd_q(tbuf))
+        {
+ //           cmd_fsm(tbuf,&cmd_state);   	//cycle cmd fsm until queue is empty
+ /**********************************************************************************************/
+	system ("/bin/stty cooked");			//switch to buffered input
+	system("stty echo");					//turn on terminal echo
+	char	bbb[128];
+	printf("\npopping command queue\n");
+	while(pop_cmd_q(bbb)) printf("<%s>\n",bbb);
+	system("stty -echo");					//turn off terminal echo
+	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
+/**********************************************************************************************/
+		}	
+		if(prompted == false){				//display prompt if necessary
+			prompted = true;
+			prompt();
+		}
+
 		c = getchar();			//grab a character from the keyboard buffer
 		switch (c) {
 /* ESC */  case _ESC:
 #ifdef _TRACE
-			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"ecape entered",trace_flag);
+			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"escape entered",trace_flag);
 #endif
 			exit_flag = 0;
 			system("/bin/stty cooked");			//switch to buffered iput
@@ -98,29 +118,20 @@ int main(void) {
 			exit(1);
 			break;
 
-
 /* CR */	case _CR:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"character entered is a _CR",trace_flag);
 #endif
-			fputc(_CR, stdout);
+			fputc(_CR, stdout);						//make the scree look right
 			fputc(_NL, stdout);
-//			if(char_type(*(work_buffer_ptr-1))>1 )		//the character before the CR is not a delimiter or QUOTE
-//				*work_buffer_ptr++ = ' ';
-			*work_buffer_ptr = c;
-//			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out input buffer
-//				input_buffer[i] = '\0';
-//			input_buffer_ptr = input_buffer;					//reset pointer
-
+			*work_buffer_ptr = c;					// load the CR into the work buffer
 			work_buffer_ptr = work_buffer;
 			reset_char_fsm();
-			while(*work_buffer_ptr != '\0'){
+			while(*work_buffer_ptr != '\0')			//send the work buffer content to the fsm
 				char_fsm(char_type(*work_buffer_ptr),&char_state,work_buffer_ptr++);  //cycle fsm
-
-			}
-			for (i = 0; i < _INPUT_BUFFER; i++)					//clean out work buffer
+			for (i = 0; i < _INPUT_BUFFER; i++)		//clean out work buffer
 				work_buffer[i] = '\0';
-			work_buffer_ptr = work_buffer;					//reset pointer
+			work_buffer_ptr = work_buffer;			//reset pointer
 			break;
 /* DEL */   case _DEL:
 #ifdef _TRACE
@@ -132,16 +143,15 @@ int main(void) {
 			*work_buffer_ptr-- = '\0';
 			*work_buffer_ptr = '\0';
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"remove charater from input buffer",trace_flag);
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"remove character from input buffer",trace_flag);
 #endif
 			break;
-
 
 /* OTHER */ default:
 			fputc(c, stdout);       				// echo char
 			*work_buffer_ptr++ = c;
 #ifdef _TRACE
-	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"add charater to work buffer",trace_flag);
+	trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"add character to work buffer",trace_flag);
 #endif
 		}
 
