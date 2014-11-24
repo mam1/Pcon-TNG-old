@@ -17,12 +17,15 @@
 #include "typedefs.h"
 #include "char_fsm.h"
 #include "cmd_fsm.h"
+#include "trace.h"
+
 
 /*********************** externals **************************/
  extern int          cmd_state,char_state;
  extern char         input_buffer[_INPUT_BUFFER],*input_buffer_ptr;
  extern char         c_name[_CHANNEL_NAME_SIZE][_NUMBER_OF_CHANNELS];
  extern int 		 exit_flag;		//exit man loop if TRUE
+ extern int			 trace_flag;
 
 /* code to text conversion */
 extern char *day_names_long[7];
@@ -31,7 +34,9 @@ extern char *onoff[2];
 extern char *con_mode[3];
 extern char *sch_mode[2];
 /*********************** globals **************************/
-
+#ifdef _TRACE
+	char			trace_buf[128];
+#endif
 /***************************************/
 /*****  command  parser fsm start ******/
 /***************************************/
@@ -102,9 +107,9 @@ int cmd_new_state[_CMD_TOKENS][_CMD_STATES] ={
 /* 28  ?        */  {0, 1, 2}};
 
 /*cmd processor functions */
-int c_0(int,int *,char *); /* prompt if needed else do nothing */
+int c_0(int,int *,char *); /* nop */
 int c_1(int,int *,char *); /* display all valid commands for the current state */
-int c_2(int,int *,char *); /* terminate program */
+int c_2(int,int *,char *); /* ping */
 int c_3(int,int *,char *); /* terminate program */
 
 
@@ -118,7 +123,7 @@ CMD_ACTION_PTR cmd_action[_CMD_TOKENS][_CMD_STATES] = {
 /*  3  OTHER    */  { c_0, c_0, c_0},
 /*  4  quit     */  { c_3, c_0, c_0},
 /*  5     q     */  { c_3, c_0, c_0},
-/*  6  ping     */  { c_0, c_0, c_0},
+/*  6  ping     */  { c_2, c_0, c_0},
 /*  7  file     */  { c_0, c_0, c_0},
 /*  8  edit     */  { c_0, c_0, c_0},
 /*  9  quit     */  { c_0, c_0, c_0},
@@ -148,7 +153,7 @@ CMD_ACTION_PTR cmd_action[_CMD_TOKENS][_CMD_STATES] = {
 
 
 /**************** command fsm action routines ******************/
-/* do nothing except prompt if needed */
+/* do nothing */
 int c_0(int tt, int *n, char *s)
 {
     return 0;
@@ -162,6 +167,8 @@ int c_1(int tt, int *n, char *s)
 /* ping BBB */
 int c_2(int tt, int *n, char *s)
 {
+	printf("  sending ping request to BBB\n\r");
+	printf("  BBB acknowledge recieved\n");
 	return 0;
 }
 /* terminate program */
@@ -181,7 +188,11 @@ void cmd_fsm(char *token,int *state)
     static char        *s_ptr;
 
     tt = cmd_type(token);
-    printf("cmd_fsm called: token <%s>, token type <%i>, state <%i>\n",token,tt, *state);
+#ifdef _TRACE
+		    sprintf(trace_buf, "cmd_fsm called: token <%s>, token type <%i>, state <%i>\n",token,tt, *state);
+			strace(_TRACE_FILE_NAME,trace_buf,trace_flag);
+#endif
+//    printf("cmd_fsm called: token <%s>, token type <%i>, state <%i>\n",token,tt, *state);
     if((tt==1)||(tt==2))
     {
         n_ptr = NULL;

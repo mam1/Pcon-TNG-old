@@ -40,3 +40,14 @@ void trace(char *name, char *rname, int state, char *buf, char *message,int flag
 }
 
 
+void strace(char *name, char *message,int flag){		//(trace filename, message, trace flag)
+	FILE *tracef;
+	if(flag == false)
+		return;
+
+	tracef = fopen(name, "a");
+	fprintf(tracef,"%s\n",message);
+	fclose(tracef);
+	return;
+}
+

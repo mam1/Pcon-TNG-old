@@ -13,6 +13,7 @@
 
 int trace_on(char *,int *);
 void trace(char *, char *, int, char *, char *, int);		//(trace filename, routine name, state, buffer, message, trace flag)
+void strace(char *, char *, int);		//(trace filename, message, trace flag)
 
 
 

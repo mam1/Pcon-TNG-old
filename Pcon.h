@@ -4,7 +4,7 @@
 #define _major_version 2
 #define _minor_version 0
 #define _minor_revision 10
-//#define _TRACE
+#define _TRACE
 
 // #define _FILE_SET_ID            "834"
 
@@ -80,5 +80,6 @@
 #define _NO_CHAR    255
 #define _DELIMITER	42	//asterisk
 
-
+/* fuctions */
+int term(int);
 #endif

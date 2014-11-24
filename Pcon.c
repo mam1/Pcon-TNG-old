@@ -7,6 +7,7 @@
 #include <stdint.h>		//uint_8, uint_16, uint_32, etc.
 #include <ctype.h> 		//isalnum, tolower
 #include <stdlib.h>
+#include <fcntl.h>
 #include <string.h>
 #include "Pcon.h"
 #include "typedefs.h"
@@ -79,6 +80,15 @@ int main(void) {
 	/* set up unbuffered io */
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
+	/*
+	int ctrlflags;
+	ctrlflags = fcntl(stdin, F_GETFL);
+	ctrlflags |= O_NONBLOCK;
+	fcntl(stdin, F_SETFL, ctrlflags);
+	*/
+
+	int flags = fcntl(STDOUT_FILENO, F_GETFL);
+	fcntl(STDOUT_FILENO, F_SETFL, flags | O_NONBLOCK);
 
 
 	work_buffer_ptr = work_buffer;    	//initialize work buffer pointer
@@ -94,7 +104,6 @@ int main(void) {
 	/**************** start main processing loop ****************/
 	/************************************************************/
 	while (1){
-
         /* check the token stack */
         while(pop_cmd_q(tbuf))
         {
@@ -115,8 +124,12 @@ int main(void) {
 			prompt();
 		}
 
-		c = getchar();			//grab a character from the keyboard buffer
+//		c = getchar();			//grab a character from the keyboard buffer
+		c = fgetc(stdin);
+
 		switch (c) {
+/* NOCR */ case _NO_CHAR:
+			   break;
 /* ESC */  case _ESC:
 #ifdef _TRACE
 			trace(_TRACE_FILE_NAME,"Pcon",char_state,work_buffer,"escape entered",trace_flag);
@@ -189,4 +202,5 @@ int term(int t){
 	default:
 			break;
 	}
+	return 1;
 }
