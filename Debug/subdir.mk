@@ -7,18 +7,21 @@ C_SRCS += \
 ../Pcon.c \
 ../char_fsm.c \
 ../cmd_fsm.c \
+../serial_io.c \
 ../trace.c 
 
 OBJS += \
 ./Pcon.o \
 ./char_fsm.o \
 ./cmd_fsm.o \
+./serial_io.o \
 ./trace.o 
 
 C_DEPS += \
 ./Pcon.d \
 ./char_fsm.d \
 ./cmd_fsm.d \
+./serial_io.d \
 ./trace.d 
 
 

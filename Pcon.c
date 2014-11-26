@@ -13,13 +13,14 @@
 #include "typedefs.h"
 #include "char_fsm.h"
 #include "trace.h"
+#include "serial_io.h"
 
 // #include "cmd_fsm.h"
 
 /******************************** globals **************************************/
 int	trace_flag;			//control program trace
 int exit_flag = false;	//exit man loop if TRUE
-
+int bbb;				//UART1 file dscriptor
 
 char work_buffer[_INPUT_BUFFER], *work_buffer_ptr;
 char tbuf[_TOKEN_BUFFER];
@@ -54,6 +55,7 @@ void prompt(void){
 /********************************************************************/
 int main(void) {
 	char c;       			//character typed on keyboard
+
 	int	char_state;			//current state of the character processing fsm
 	int prompted = false;	//has a prompt been sent
 	int i;
@@ -80,21 +82,15 @@ int main(void) {
 	/* set up unbuffered io */
 	system("stty -echo");					//turn off terminal echo
 	system("/bin/stty raw");				// use system call to make terminal send all keystrokes directly to stdin
-	/*
-	int ctrlflags;
-	ctrlflags = fcntl(stdin, F_GETFL);
-	ctrlflags |= O_NONBLOCK;
-	fcntl(stdin, F_SETFL, ctrlflags);
-	*/
-
 	int flags = fcntl(STDOUT_FILENO, F_GETFL);
 	fcntl(STDOUT_FILENO, F_SETFL, flags | O_NONBLOCK);
 
+	/* open UART1 to connect to BBB */
+	bbb = s_open();
 
 	work_buffer_ptr = work_buffer;    	//initialize work buffer pointer
 	char_state = 0;						//initialize the character fsm
 	cmd_state = 0;                     	//initialize the command processor fsm
-	
 	exit_flag = 1;
 
 #ifdef _TRACE

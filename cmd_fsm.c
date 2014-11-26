@@ -26,6 +26,7 @@
  extern char         c_name[_CHANNEL_NAME_SIZE][_NUMBER_OF_CHANNELS];
  extern int 		 exit_flag;		//exit man loop if TRUE
  extern int			 trace_flag;
+ extern int 		 bbb;				//UART1 file dscriptor
 
 /* code to text conversion */
 extern char *day_names_long[7];
@@ -167,7 +168,9 @@ int c_1(int tt, int *n, char *s)
 /* ping BBB */
 int c_2(int tt, int *n, char *s)
 {
-	printf("  sending ping request to BBB\n\r");
+	char	cmd = 'p';
+//	printf("  sending ping request to BBB <%u>\n\r",cmd);
+	write(bbb,&cmd,1);
 	printf("  BBB acknowledge recieved\n");
 	return 0;
 }
